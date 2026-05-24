@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kpclive 签到功能原型 V1</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e9eef5 100%);
+    min-height: 100vh;
+    padding: 24px;
+    color: #1d2129;
+  }
+
+  .page-header {
+    max-width: 1280px;
+    margin: 0 auto 24px;
+  }
+  .page-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .page-subtitle {
+    font-size: 13px;
+    color: #86909c;
+  }
+
+  /* 场景切换 */
+  .scenario-bar {
+    max-width: 1280px;
+    margin: 0 auto 24px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  }
+  .scenario-bar h3 {
+    font-size: 14px;
+    color: #4e5969;
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .scenario-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .scenario-btn {
+    background: #f7f8fa;
+    border: 1px solid #e5e6eb;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #4e5969;
+    transition: all 0.2s;
+  }
+  .scenario-btn:hover { background: #eef0f3; }
+  .scenario-btn.active {
+    background: #ff6b35;
+    color: #fff;
+    border-color: #ff6b35;
+  }
+
+  /* 主体布局：两屏 + 设计说明 */
+  .stage {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 320px;
+    gap: 24px;
+    align-items: start;
+  }
+
+  /* 手机外壳 */
+  .phone {
+    background: #fff;
+    border-radius: 36px;
+    padding: 12px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+  .phone-screen {
+    background: #f5f7fa;
+    border-radius: 28px;
+    overflow: hidden;
+    height: 720px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .phone-label {
+    text-align: center;
+    font-size: 12px;
+    color: #86909c;
+    margin-top: 12px;
+  }
+
+  /* 状态栏 */
+  .status-bar {
+    height: 32px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #1d2129;
+    flex-shrink: 0;
+  }
+  .status-bar .right {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  /* 导航栏 */
+  .nav-bar {
+    height: 44px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: 0.5px solid #f0f1f3;
+    flex-shrink: 0;
+  }
+  .nav-bar .back {
+    font-size: 20px;
+    color: #1d2129;
+    cursor: pointer;
+    width: 24px;
+  }
+
+  /* 滚动区 */
+  .screen-body {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* === 个人中心样式 === */
+  .profile-header {
+    background: linear-gradient(135deg, #ff7a45 0%, #ff5722 100%);
+    color: #fff;
+    padding: 20px 16px 28px;
+  }
+  .profile-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+  .profile-info .name {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .profile-info .sub {
+    font-size: 12px;
+    opacity: 0.85;
+  }
+
+  .menu-list {
+    background: #fff;
+    margin: 12px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .menu-item {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 0.5px solid #f5f7fa;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .menu-item:last-child { border-bottom: none; }
+  .menu-item:active, .menu-item:hover { background: #fafbfc; }
+  .menu-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 16px;
+  }
+  .menu-text {
+    flex: 1;
+  }
+  .menu-title {
+    font-size: 15px;
+    color: #1d2129;
+    margin-bottom: 2px;
+  }
+  .menu-subtitle {
+    font-size: 12px;
+    color: #86909c;
+  }
+  .menu-arrow {
+    color: #c9cdd4;
+    font-size: 16px;
+  }
+
+  /* 签到入口高亮 */
+  .menu-item.checkin-entry {
+    background: linear-gradient(90deg, #fff7f2 0%, #fff 100%);
+  }
+  .menu-item.checkin-entry .menu-icon {
+    background: #ffe8db;
+    color: #ff6b35;
+  }
+  .menu-item.checkin-entry .menu-subtitle {
+    color: #ff6b35;
+    font-weight: 500;
+  }
+  .menu-item.checkin-entry .status-tag {
+    font-size: 11px;
+    color: #00b42a;
+    background: #e8f7e8;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-right: 8px;
+  }
+
+  /* === 签到页样式 === */
+  .checkin-page {
+    background: linear-gradient(180deg, #fff7f2 0%, #f5f7fa 240px);
+    min-height: 100%;
+  }
+  .streak-section {
+    text-align: center;
+    padding: 32px 16px 24px;
+  }
+  .streak-label {
+    font-size: 13px;
+    color: #86909c;
+    margin-bottom: 8px;
+  }
+  .streak-number {
+    font-size: 64px;
+    font-weight: 700;
+    color: #ff6b35;
+    line-height: 1;
+    margin-bottom: 6px;
+    font-feature-settings: "tnum";
+  }
+  .streak-unit {
+    font-size: 14px;
+    color: #4e5969;
+    margin-bottom: 6px;
+  }
+  .streak-today {
+    display: inline-block;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: rgba(0,180,42,0.1);
+    color: #00b42a;
+  }
+  .streak-today.pending {
+    background: rgba(255,107,53,0.1);
+    color: #ff6b35;
+  }
+
+  /* 签到按钮 */
+  .checkin-action {
+    padding: 8px 16px 24px;
+  }
+  .checkin-button {
+    width: 100%;
+    background: linear-gradient(135deg, #ff7a45 0%, #ff5722 100%);
+    color: #fff;
+    font-size: 17px;
+    font-weight: 600;
+    border: none;
+    border-radius: 100px;
+    padding: 14px;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(255,107,53,0.3);
+    transition: transform 0.1s;
+  }
+  .checkin-button:active { transform: scale(0.98); }
+  .checkin-button:disabled,
+  .checkin-button.done {
+    background: #e5e6eb;
+    color: #86909c;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+  .checkin-button-sub {
+    text-align: center;
+    font-size: 12px;
+    color: #86909c;
+    margin-top: 10px;
+    min-height: 16px;
+  }
+  .checkin-button-sub strong {
+    color: #ff6b35;
+    font-weight: 600;
+  }
+
+  /* 规则卡片 */
+  .rule-card {
+    background: #fff;
+    margin: 12px 16px;
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .rule-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1d2129;
+    margin-bottom: 12px;
+  }
+  .reward-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  .reward-cell {
+    flex: 1;
+    background: #f7f8fa;
+    border-radius: 8px;
+    padding: 10px 4px;
+    text-align: center;
+    position: relative;
+  }
+  .reward-cell.done {
+    background: linear-gradient(135deg, #ffe8db 0%, #ffd9c2 100%);
+  }
+  .reward-cell.today {
+    background: linear-gradient(135deg, #ff7a45 0%, #ff5722 100%);
+    color: #fff;
+  }
+  .reward-cell.today::after {
+    content: '今天';
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    color: #ff5722;
+    font-size: 10px;
+    padding: 1px 6px;
+    border-radius: 100px;
+    border: 1px solid #ff5722;
+    white-space: nowrap;
+  }
+  .reward-day {
+    font-size: 11px;
+    color: #86909c;
+    margin-bottom: 4px;
+  }
+  .reward-cell.today .reward-day { color: rgba(255,255,255,0.85); }
+  .reward-cell.done .reward-day { color: #ff6b35; }
+  .reward-value {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .rule-tip {
+    font-size: 12px;
+    color: #86909c;
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+  .rule-cap {
+    font-size: 12px;
+    color: #ff6b35;
+    background: #fff7f2;
+    border: 1px dashed #ffb591;
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin-top: 12px;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  /* Toast */
+  .toast-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .toast-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .toast-box {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px 32px;
+    text-align: center;
+    min-width: 200px;
+    transform: scale(0.9);
+    transition: transform 0.2s;
+  }
+  .toast-overlay.show .toast-box { transform: scale(1); }
+  .toast-icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #ff7a45 0%, #ff5722 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 28px;
+    color: #fff;
+  }
+  .toast-points {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ff6b35;
+    margin-bottom: 6px;
+  }
+  .toast-msg {
+    font-size: 14px;
+    color: #4e5969;
+    line-height: 1.5;
+  }
+
+  /* === 设计说明面板 === */
+  .notes-panel {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    position: sticky;
+    top: 24px;
+  }
+  .notes-panel h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f0f1f3;
+    color: #1d2129;
+  }
+  .note-section {
+    margin-bottom: 16px;
+  }
+  .note-label {
+    font-size: 11px;
+    color: #86909c;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .note-value {
+    font-size: 13px;
+    color: #1d2129;
+    line-height: 1.5;
+  }
+  .note-value code {
+    background: #f5f7fa;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #ff6b35;
+  }
+  .note-divider {
+    height: 1px;
+    background: #f0f1f3;
+    margin: 12px 0;
+  }
+  .note-list {
+    font-size: 12px;
+    color: #4e5969;
+    line-height: 1.7;
+    padding-left: 16px;
+  }
+  .note-list li { margin-bottom: 2px; }
+
+  .reset-btn {
+    width: 100%;
+    margin-top: 16px;
+    background: #f7f8fa;
+    border: 1px solid #e5e6eb;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #4e5969;
+    font-size: 12px;
+  }
+  .reset-btn:hover { background: #eef0f3; }
+
+  @media (max-width: 1100px) {
+    .stage { grid-template-columns: 1fr 1fr; }
+    .notes-panel { grid-column: 1 / -1; position: static; }
+  }
+  @media (max-width: 720px) {
+    .stage { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="page-title">kpclive 签到功能交互原型 V1</div>
+  <div class="page-subtitle">切换不同场景查看各状态下的界面表现；右侧手机可点击签到按钮触发完整签到流程</div>
+</div>
+
+<div class="scenario-bar">
+  <h3>场景切换</h3>
+  <div class="scenario-buttons" id="scenarioButtons">
+    <button class="scenario-btn active" data-scenario="new">新用户首次进入</button>
+    <button class="scenario-btn" data-scenario="streaking">连续中（第 3 天，今日未签）</button>
+    <button class="scenario-btn" data-scenario="done">今日已签到（streak = 4）</button>
+    <button class="scenario-btn" data-scenario="broken">中断回归（曾连续 5 天后中断）</button>
+    <button class="scenario-btn" data-scenario="capped">已封顶（连续 8 天，今日未签）</button>
+  </div>
+</div>
+
+<div class="stage">
+
+  <!-- 左：个人中心 -->
+  <div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="right">●●●● 5G ▮</span>
+        </div>
+        <div class="nav-bar">
+          <span style="width:24px;"></span>
+          <span>个人中心</span>
+          <span style="width:24px; text-align:right;">⚙</span>
+        </div>
+        <div class="screen-body">
+          <div class="profile-header">
+            <div class="profile-info">
+              <div class="avatar">👤</div>
+              <div>
+                <div class="name">kpc_user_8842</div>
+                <div class="sub">普通会员 · ID:8842</div>
+              </div>
+            </div>
+          </div>
+          <div class="menu-list">
+            <div class="menu-item">
+              <div class="menu-icon" style="background:#fff0f0;color:#f53f3f;">📺</div>
+              <div class="menu-text"><div class="menu-title">我的直播</div></div>
+              <span class="menu-arrow">›</span>
+            </div>
+            <div class="menu-item">
+              <div class="menu-icon" style="background:#e8f3ff;color:#165dff;">📚</div>
+              <div class="menu-text"><div class="menu-title">我的课程</div></div>
+              <span class="menu-arrow">›</span>
+            </div>
+
+            <!-- 签到入口（高亮） -->
+            <div class="menu-item checkin-entry" id="checkinEntry">
+              <div class="menu-icon">🎯</div>
+              <div class="menu-text">
+                <div class="menu-title">每日签到</div>
+                <div class="menu-subtitle" id="entrySubtitle">签到 +5 积分</div>
+              </div>
+              <span class="status-tag" id="entryTag" style="display:none;">已签到</span>
+              <span class="menu-arrow">›</span>
+            </div>
+
+            <div class="menu-item">
+              <div class="menu-icon" style="background:#fef7e6;color:#ff7d00;">💎</div>
+              <div class="menu-text"><div class="menu-title">我的积分</div><div class="menu-subtitle" id="totalPoints">累计 0 积分</div></div>
+              <span class="menu-arrow">›</span>
+            </div>
+            <div class="menu-item">
+              <div class="menu-icon" style="background:#f3f0ff;color:#722ed1;">🎁</div>
+              <div class="menu-text"><div class="menu-title">优惠券</div></div>
+              <span class="menu-arrow">›</span>
+            </div>
+            <div class="menu-item">
+              <div class="menu-icon" style="background:#f5f7fa;color:#4e5969;">⚙️</div>
+              <div class="menu-text"><div class="menu-title">设置</div></div>
+              <span class="menu-arrow">›</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">个人中心（签到入口）</div>
+  </div>
+
+  <!-- 右：签到页 -->
+  <div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar">
+          <span>9:41</span>
+          <span class="right">●●●● 5G ▮</span>
+        </div>
+        <div class="nav-bar">
+          <span class="back">‹</span>
+          <span>每日签到</span>
+          <span style="width:24px;"></span>
+        </div>
+        <div class="screen-body">
+          <div class="checkin-page">
+            <div class="streak-section">
+              <div class="streak-label">连续签到</div>
+              <div class="streak-number" id="streakNum">0</div>
+              <div class="streak-unit">天</div>
+              <div class="streak-today" id="streakToday">今日未签到</div>
+            </div>
+            <div class="checkin-action">
+              <button class="checkin-button" id="checkinBtn">签到 +5 积分</button>
+              <div class="checkin-button-sub" id="checkinSub"></div>
+            </div>
+            <div class="rule-card">
+              <div class="rule-title">连续签到奖励</div>
+              <div class="reward-row" id="rewardRow"></div>
+              <div class="rule-cap" id="ruleCap" style="display:none;"></div>
+              <div class="rule-tip">中断签到，连续天数从第 1 天重新开始；已获得积分不会丢失。</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Toast -->
+        <div class="toast-overlay" id="toastOverlay">
+          <div class="toast-box">
+            <div class="toast-icon">✓</div>
+            <div class="toast-points" id="toastPoints">+5 积分</div>
+            <div class="toast-msg" id="toastMsg">签到成功</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-label">签到主页</div>
+  </div>
+
+  <!-- 设计说明面板 -->
+  <div class="notes-panel">
+    <h3>当前场景设计逻辑</h3>
+    <div class="note-section">
+      <div class="note-label">场景</div>
+      <div class="note-value" id="noteScenario">新用户首次进入</div>
+    </div>
+    <div class="note-section">
+      <div class="note-label">streak 显示值</div>
+      <div class="note-value" id="noteStreak">0（首次签到无历史）</div>
+    </div>
+    <div class="note-section">
+      <div class="note-label">入口副标题</div>
+      <div class="note-value" id="noteSubtitle"><code>签到 +5 积分</code></div>
+    </div>
+    <div class="note-section">
+      <div class="note-label">签到按钮文案</div>
+      <div class="note-value" id="noteButton"><code>签到 +5 积分</code></div>
+    </div>
+    <div class="note-section">
+      <div class="note-label">点击签到后反馈</div>
+      <div class="note-value" id="noteFeedback">普通文案："签到成功 +5 积分"</div>
+    </div>
+    <div class="note-divider"></div>
+    <div class="note-section">
+      <div class="note-label">关键判定</div>
+      <ul class="note-list" id="noteJudge"></ul>
+    </div>
+    <button class="reset-btn" id="resetBtn">重置当前场景</button>
+  </div>
+
+</div>
+
+<script>
+// 默认积分配置
+const POINTS_CONFIG = [5, 6, 7, 8, 9, 10, 15];
+
+// 场景定义
+const scenarios = {
+  new: {
+    label: '新用户首次进入',
+    streak: 0,
+    checkedInToday: false,
+    hasHistory: false,
+    totalPoints: 0,
+    judge: [
+      'hasHistory = false（无任何签到记录）',
+      'streak 懒计算 → 显示 0',
+      '点击签到：streak_day = 1，发 5 积分',
+      'is_restart = false（不展示"重新出发"）'
+    ]
+  },
+  streaking: {
+    label: '连续中（第 3 天，今日未签）',
+    streak: 3,
+    checkedInToday: false,
+    hasHistory: true,
+    totalPoints: 18, // 5+6+7
+    judge: [
+      'hasHistory = true，上次签到 = 昨天',
+      'streak 懒计算 → 显示存储值 3',
+      '点击签到：streak_day = 4，发 8 积分',
+      '次日预告（签后）: 9 积分'
+    ]
+  },
+  done: {
+    label: '今日已签到（streak = 4）',
+    streak: 4,
+    checkedInToday: true,
+    hasHistory: true,
+    totalPoints: 26, // 5+6+7+8
+    judge: [
+      'checked_in_today = true',
+      '入口与按钮均改为"明天签到可得 +9 积分"',
+      '按钮置灰，不可点击',
+      '次日打开时按钮恢复为"签到 +9 积分"'
+    ]
+  },
+  broken: {
+    label: '中断回归（曾连续 5 天后中断）',
+    streak: 0,
+    checkedInToday: false,
+    hasHistory: true,
+    storedStreakBeforeReset: 5,
+    totalPoints: 35, // 5+6+7+8+9, 已发放积分不变
+    judge: [
+      'hasHistory = true，上次签到日期早于昨天',
+      'streak 懒计算 → 显示 0（已断）',
+      '点击签到：streak_day = 1，发 5 积分',
+      'is_restart = true → 显示"签到成功 +5 积分，重新出发！"',
+      '累计积分 35 不动'
+    ]
+  },
+  capped: {
+    label: '已封顶（连续 8 天，今日未签）',
+    streak: 8,
+    checkedInToday: false,
+    hasHistory: true,
+    totalPoints: 60, // 5+6+7+8+9+10+15
+    judge: [
+      'streak 已超过数组长度（7）',
+      'streak_day ≥ 7 时统一发数组最后一个值',
+      '点击签到：streak_day = 9，发 15 积分（封顶）',
+      '次日预告：仍为 15 积分'
+    ]
+  }
+};
+
+let state = null;
+let originalState = null;
+
+function pointsForDay(day) {
+  // day 是签到完成后的 streak 值（从 1 开始）
+  if (day <= 0) return POINTS_CONFIG[0];
+  const idx = Math.min(day - 1, POINTS_CONFIG.length - 1);
+  return POINTS_CONFIG[idx];
+}
+
+function applyScenario(name) {
+  const s = scenarios[name];
+  state = {
+    name,
+    streak: s.streak,
+    checkedInToday: s.checkedInToday,
+    hasHistory: s.hasHistory,
+    totalPoints: s.totalPoints,
+    label: s.label,
+    judge: s.judge,
+    isRestartFlag: false,
+    lastAwarded: 0
+  };
+  originalState = JSON.parse(JSON.stringify(state));
+  render();
+}
+
+function render() {
+  // ===== 入口 =====
+  const entry = document.getElementById('checkinEntry');
+  const entrySub = document.getElementById('entrySubtitle');
+  const entryTag = document.getElementById('entryTag');
+  const totalPointsEl = document.getElementById('totalPoints');
+
+  if (state.checkedInToday) {
+    // 明天预告：基于当前 streak + 1 计算
+    const tomorrow = pointsForDay(state.streak + 1);
+    entrySub.textContent = `明天签到可得 +${tomorrow} 积分`;
+    entryTag.style.display = 'inline-block';
+  } else {
+    // 今天预告：如果中断/新用户，今天签到完是第 1 天；否则是 streak + 1 天
+    const today = pointsForDay(state.streak + 1);
+    entrySub.textContent = `签到 +${today} 积分`;
+    entryTag.style.display = 'none';
+  }
+  totalPointsEl.textContent = `累计 ${state.totalPoints} 积分`;
+
+  // ===== 签到主页 =====
+  const streakNum = document.getElementById('streakNum');
+  const streakToday = document.getElementById('streakToday');
+  const checkinBtn = document.getElementById('checkinBtn');
+  const checkinSub = document.getElementById('checkinSub');
+
+  streakNum.textContent = state.streak;
+
+  if (state.checkedInToday) {
+    streakToday.textContent = '今日已签到';
+    streakToday.classList.remove('pending');
+    checkinBtn.textContent = '已签到';
+    checkinBtn.classList.add('done');
+    checkinBtn.disabled = true;
+    const tomorrow = pointsForDay(state.streak + 1);
+    checkinSub.innerHTML = `明天签到可得 <strong>+${tomorrow} 积分</strong>`;
+  } else {
+    streakToday.textContent = '今日未签到';
+    streakToday.classList.add('pending');
+    const today = pointsForDay(state.streak + 1);
+    checkinBtn.textContent = `签到 +${today} 积分`;
+    checkinBtn.classList.remove('done');
+    checkinBtn.disabled = false;
+    checkinSub.innerHTML = '';
+  }
+
+  // ===== 奖励规则卡 =====
+  renderRewards();
+
+  // ===== 设计说明面板 =====
+  document.getElementById('noteScenario').textContent = state.label;
+  document.getElementById('noteStreak').textContent = state.checkedInToday
+    ? `${state.streak}（今日已签到）`
+    : (state.hasHistory ? `${state.streak}（懒计算后的值）` : '0（首次签到无历史）');
+  document.getElementById('noteSubtitle').innerHTML = `<code>${entrySub.textContent}</code>`;
+  document.getElementById('noteButton').innerHTML = state.checkedInToday
+    ? `<code>已签到</code>（按钮置灰）`
+    : `<code>${checkinBtn.textContent}</code>`;
+
+  const feedbackText = state.checkedInToday
+    ? '（用户当前已签，无反馈）'
+    : (state.hasHistory && state.streak === 0 ? '"重新出发"文案：签到成功 +N 积分，重新出发！' : '普通文案：签到成功 +N 积分');
+  document.getElementById('noteFeedback').textContent = feedbackText;
+
+  const judgeList = document.getElementById('noteJudge');
+  judgeList.innerHTML = state.judge.map(j => `<li>${j}</li>`).join('');
+}
+
+function renderRewards() {
+  const row = document.getElementById('rewardRow');
+  const cap = document.getElementById('ruleCap');
+  row.innerHTML = '';
+
+  // 固定显示 7 格（配置 > 7 时只展示前 7，配置 < 7 时超出部分用封顶值填充，由 pointsForDay 保证）
+  const SLOTS = 7;
+  const isCapped = state.streak >= SLOTS;
+  const capValue = POINTS_CONFIG[POINTS_CONFIG.length - 1];
+
+  for (let day = 1; day <= SLOTS; day++) {
+    const cell = document.createElement('div');
+    cell.className = 'reward-cell';
+    const value = pointsForDay(day);
+
+    if (isCapped) {
+      // 封顶：所有格子标 done
+      cell.classList.add('done');
+    } else if (state.checkedInToday) {
+      // 已签到：第 1 到 streak 标 done
+      if (day <= state.streak) cell.classList.add('done');
+    } else {
+      // 未签到：第 (streak + 1) 标 today
+      if (day === state.streak + 1) cell.classList.add('today');
+    }
+
+    cell.innerHTML = `<div class="reward-day">第${day}天</div><div class="reward-value">+${value}</div>`;
+    row.appendChild(cell);
+  }
+
+  // 封顶提示文案
+  if (isCapped) {
+    cap.style.display = 'block';
+    cap.innerHTML = `🎉 已连续签到 <strong>${state.streak}</strong> 天，享受最高 <strong>${capValue}</strong> 积分/天`;
+  } else {
+    cap.style.display = 'none';
+  }
+}
+
+function doCheckIn() {
+  if (state.checkedInToday) return;
+
+  // 判定是否触发"重新出发"
+  const isRestart = state.hasHistory && state.streak === 0;
+  const newStreak = state.streak + 1;
+  const awarded = pointsForDay(newStreak);
+
+  state.streak = newStreak;
+  state.checkedInToday = true;
+  state.hasHistory = true;
+  state.totalPoints += awarded;
+  state.isRestartFlag = isRestart;
+  state.lastAwarded = awarded;
+
+  // 显示 Toast
+  document.getElementById('toastPoints').textContent = `+${awarded} 积分`;
+  document.getElementById('toastMsg').textContent = isRestart
+    ? '签到成功，重新出发！'
+    : '签到成功';
+  const overlay = document.getElementById('toastOverlay');
+  overlay.classList.add('show');
+  setTimeout(() => overlay.classList.remove('show'), 1600);
+
+  render();
+}
+
+// 事件绑定
+document.getElementById('scenarioButtons').addEventListener('click', e => {
+  const btn = e.target.closest('.scenario-btn');
+  if (!btn) return;
+  document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyScenario(btn.dataset.scenario);
+});
+
+document.getElementById('checkinBtn').addEventListener('click', doCheckIn);
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+  state = JSON.parse(JSON.stringify(originalState));
+  render();
+});
+
+// 个人中心点击签到入口时高亮提示
+document.getElementById('checkinEntry').addEventListener('click', () => {
+  const btn = document.getElementById('checkinBtn');
+  btn.style.boxShadow = '0 0 0 4px rgba(255,107,53,0.3), 0 6px 18px rgba(255,107,53,0.3)';
+  setTimeout(() => btn.style.boxShadow = '', 800);
+});
+
+// 初始化
+applyScenario('new');
+</script>
+
+</body>
+</html>
