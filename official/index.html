@@ -15,7 +15,7 @@
   body{margin:0;background:var(--bg);color:var(--ink);
     font-family:-apple-system,"Segoe UI Variable","Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
     font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
-  .page{max-width:1180px;margin:0 auto;padding:0 28px 70px}
+  .page{max-width:1340px;margin:0 auto;padding:0 28px 70px}
   svg{display:block}
 
   .phead{padding:30px 0 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);margin-bottom:14px;flex-wrap:wrap;gap:14px}
@@ -37,12 +37,12 @@
   .cap b{color:var(--gold-d);font-weight:600}
 
   .device{position:relative}
-  .browser{width:600px;border-radius:13px;overflow:hidden;background:var(--card);box-shadow:var(--shadow);border:1px solid var(--line)}
+  .browser{width:1040px;max-width:100%;border-radius:13px;overflow:hidden;background:var(--card);box-shadow:var(--shadow);border:1px solid var(--line)}
   .bbar{height:38px;background:#e7ebf0;display:flex;align-items:center;gap:7px;padding:0 14px}
   .bbar .d{width:11px;height:11px;border-radius:50%}
   .bbar .d:nth-child(1){background:#ec6a5e}.bbar .d:nth-child(2){background:#f4bf4f}.bbar .d:nth-child(3){background:#61c554}
   .bbar .u{margin-left:10px;flex:1;background:#fff;border-radius:8px;height:22px;display:flex;align-items:center;padding:0 12px;color:#8a949f;font-size:11.5px}
-  .bview{position:relative;height:452px;overflow:hidden;background:var(--bg)}
+  .bview{position:relative;height:680px;overflow:hidden;background:var(--bg)}
 
   .phone{width:300px;border-radius:38px;padding:11px;background:#dfe4ea;box-shadow:var(--shadow);border:1px solid #cdd4dd}
   .pscreen{position:relative;height:620px;border-radius:28px;overflow:hidden;background:var(--card);display:flex;flex-direction:column}
@@ -93,9 +93,36 @@
   .chip.warn{background:#fde9e7;color:#c23b30}.chip.muted{background:#eef1f4;color:#6b7785}
   .banner{background:#fff7e6;border:1px solid #f0dca6;border-radius:10px;padding:10px 13px;font-size:12px;color:#8a6410;display:flex;gap:9px;align-items:center;margin-bottom:14px}
   .banner svg{width:16px;height:16px;flex-shrink:0;color:var(--gold-d)}
+  /* tree node actions */
+  .tnode{justify-content:flex-start}
+  .tnode .acts{display:flex;margin-left:auto;gap:1px}
+  .tnode .acts button{border:none;background:transparent;color:var(--muted);cursor:pointer;padding:3px;border-radius:5px;line-height:0}
+  .tnode .acts button:hover{background:#e7ebf0;color:var(--ink)}
+  .tnode .acts svg{width:13px;height:13px}
+  /* admin select toolbars */
+  .atool-sel{display:none}
+  .screen.selmode .atool-normal{display:none}
+  .screen.selmode .atool-sel{display:flex}
+  /* admin centered dialogs */
+  .adlg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;border-radius:14px;width:380px;max-width:90%;max-height:92%;overflow-y:auto;padding:20px;box-shadow:var(--shadow);animation:fade .2s}
+  .adlg h4{margin:0;font-size:15px}
+  .adlg .sub{font-size:11.5px;color:var(--muted);margin:3px 0 14px}
+  .adlg .dacts{display:flex;gap:8px;justify-content:flex-end;align-items:center;margin-top:18px}
+  .langtabs{display:inline-flex;gap:5px;margin-bottom:8px;flex-wrap:wrap}
+  .langtabs b{padding:4px 11px;font-size:11.5px;border:1px solid var(--line);border-radius:20px;cursor:pointer;color:var(--muted)}
+  .langtabs b.on{background:var(--gold);border-color:var(--gold);color:#1a1304;font-weight:700}
+  .coverup{display:flex;gap:12px;align-items:center;margin-top:6px}
+  .coverup .cv{width:88px;height:54px;border-radius:9px;flex-shrink:0;overflow:hidden;position:relative}
+  .picktree{border:1px solid var(--line);border-radius:10px;padding:8px;max-height:200px;overflow-y:auto}
+  .picktree .pt{padding:8px 10px;border-radius:8px;font-size:13px;display:flex;align-items:center;gap:8px;cursor:pointer;border:1px solid transparent}
+  .picktree .pt:hover{background:var(--soft)}
+  .picktree .pt.on{border-color:var(--gold);background:#fff7e6;color:var(--gold-d);font-weight:600}
+  .picktree .pt svg{width:14px;height:14px;color:var(--gold-d)}
+  .picktree .lv2{margin-left:18px}.picktree .lv3{margin-left:36px}
+  .linkdel{color:var(--red);font-size:12px;cursor:pointer;font-weight:600;margin-right:auto}
 
   .lib{display:flex;gap:14px}
-  .tree{width:170px;flex-shrink:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;font-size:12.5px;height:fit-content}
+  .tree{width:240px;flex-shrink:0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;font-size:12.5px;height:fit-content}
   .tnode{padding:6px 8px;border-radius:7px;display:flex;align-items:center;gap:7px;color:#3a4654;cursor:pointer}
   .tnode:hover{background:var(--soft)}
   .tnode.on{background:#fff6e2;color:#8a6410;font-weight:700}
@@ -154,6 +181,26 @@
   .matchcard .cam{width:50px;height:50px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 10px;color:#1a1304;box-shadow:0 4px 12px rgba(231,181,60,.4)}
   .matchcard .t{font-weight:800;font-size:15px}
   .matchcard .s{font-size:11.5px;color:#8a6410;margin-top:3px}
+  .remembered{background:linear-gradient(135deg,#fff6e0,#ffeecb);border:1px solid #f0dca6;border-radius:14px;padding:14px}
+  .remembered .rt{font-size:14px;font-weight:800;color:var(--ink)}
+  .remembered .rs{font-size:11.5px;color:#8a6410;margin:3px 0 11px}
+  .remembered .rbtns{display:flex;gap:9px}
+  /* 桌面端摄像头取景器 */
+  .viewfinder{position:relative;width:100%;aspect-ratio:4/3;border-radius:14px;overflow:hidden;background:radial-gradient(circle at 50% 38%,#2c3e50,#121a22);margin-bottom:14px;display:flex;align-items:center;justify-content:center}
+  .viewfinder .ring{width:140px;height:180px;border:2px dashed rgba(255,255,255,.55);border-radius:50%}
+  .viewfinder .rec{position:absolute;top:10px;left:12px;display:flex;align-items:center;gap:6px;color:#fff;font-size:11px;font-weight:600}
+  .viewfinder .rec i{width:8px;height:8px;border-radius:50%;background:#e0574c;display:inline-block;animation:blink 1.2s infinite}
+  @keyframes blink{50%{opacity:.3}}
+  .viewfinder .vt{position:absolute;bottom:10px;left:0;right:0;color:rgba(255,255,255,.72);font-size:11px}
+  /* 大图查看 lightbox */
+  .viewer{position:absolute;inset:0;background:rgba(10,14,18,.97);display:flex;flex-direction:column;z-index:30}
+  .viewer .vtop{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;color:#fff;font-size:12.5px}
+  .viewer .vclose{cursor:pointer;font-size:20px;line-height:1}
+  .viewer .vbody{flex:1;display:flex;align-items:center;justify-content:center;position:relative;padding:0 6px;min-height:0}
+  .viewer .vphoto{width:100%;max-width:520px;aspect-ratio:3/4;border-radius:10px;position:relative;overflow:hidden}
+  .viewer .vnav{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.16);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;line-height:1}
+  .viewer .vnav.prev{left:10px}.viewer .vnav.next{right:10px}
+  .viewer .vbar{padding:14px 16px}
   .seclbl{font-size:12px;color:var(--muted);font-weight:600;margin:18px 2px 8px;display:flex;align-items:center;gap:8px}
   .seclbl::after{content:"";flex:1;height:1px;background:var(--line)}
   .evrow{position:relative;width:100%;margin-top:10px;border-radius:14px;overflow:hidden;border:1px solid var(--line);cursor:pointer;box-shadow:var(--shadow-sm);transition:.15s}
@@ -200,6 +247,38 @@
   .opt .o.sel{border-color:var(--gold);background:#fff7e6}
   .opt .o .oi{width:28px;height:28px;margin:0 auto 7px;color:var(--gold-d)}
   .opt .o b{font-size:13px}.opt .o span{font-size:10.5px;color:var(--muted);display:block;margin-top:2px}
+  .pfseg{display:flex;gap:6px;margin:2px 0 10px}
+  .pfseg b{flex:1;text-align:center;padding:7px 0;font-size:12px;border:1px solid var(--line);border-radius:9px;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:5px}
+  .pfseg b.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .pfseg b svg{width:13px;height:13px}
+  .pfnote{font-size:11.5px;color:var(--muted);background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:9px 11px;margin-bottom:12px;line-height:1.55}
+  .pfnote b{color:var(--gold-d)}
+  /* 选手端搜索/筛选 */
+  .searchbar{display:flex;gap:8px;margin:6px 0 8px}
+  .sinput{flex:1;display:flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:10px;padding:8px 11px;background:#fff;min-width:0}
+  .sinput svg{width:15px;height:15px;color:var(--muted);flex-shrink:0}
+  .sinput input{border:none;outline:none;font-size:13px;width:100%;background:transparent;color:var(--ink)}
+  .datebtn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 12px;font-size:12.5px;cursor:pointer;color:var(--ink);white-space:nowrap}
+  .datebtn:hover{border-color:var(--gold)}
+  .datebtn svg{width:15px;height:15px;color:var(--gold-d)}
+  .filterchip{display:none;align-items:center;gap:7px;background:#fff7e6;border:1px solid #f0dca6;color:#8a6410;border-radius:20px;padding:5px 12px;font-size:11.5px;margin:0 0 8px;width:fit-content}
+  .filterchip svg{width:13px;height:13px}
+  .filterchip .x{cursor:pointer;font-weight:700;margin-left:2px}
+  /* 日历 */
+  .calwrap{user-select:none}
+  .calhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .caltitle{font-weight:700;font-size:14px}
+  .calnav{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink);font-size:15px}
+  .caldow{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:10.5px;color:var(--muted);text-align:center;margin-bottom:5px}
+  .calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+  .calcell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:12.5px;border-radius:8px;position:relative;color:var(--ink)}
+  .calcell.has{cursor:pointer}
+  .calcell.empty{visibility:hidden}
+  .calcell .dot{width:4px;height:4px;border-radius:50%;background:var(--gold);position:absolute;bottom:5px;left:50%;transform:translateX(-50%)}
+  .calcell.has:hover{background:var(--soft)}
+  .calcell.inrange{background:#fff3da}
+  .calcell.start,.calcell.end{background:var(--gold);color:#1a1304;font-weight:700}
+  .calcell.start .dot,.calcell.end .dot{background:#1a1304}
   .langlist .li{display:flex;align-items:center;justify-content:space-between;padding:12px 4px;border-bottom:1px solid var(--line);font-size:13.5px;cursor:pointer}
   .langlist .li:last-child{border-bottom:none}
   .langlist .li.sel{color:var(--gold-d);font-weight:700}
@@ -207,6 +286,16 @@
   .spinner{width:38px;height:38px;border:3px solid #eee;border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
   @keyframes spin{to{transform:rotate(360deg)}}
   .loadbox{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);background:#fff;border-radius:16px;padding:26px 30px;text-align:center;box-shadow:var(--shadow);min-width:160px}
+  .appguide{display:none;align-items:center;gap:8px;margin-top:12px;padding:10px 12px;border-radius:11px;background:#fff7e6;border:1px solid #f0dca6;font-size:11.5px;color:#8a6410}
+  .appguide svg{width:18px;height:18px;color:var(--gold-d);flex-shrink:0}
+  .appguide .gt{flex:1;line-height:1.4}.appguide .gt b{color:var(--gold-d)}
+  .appbtn{white-space:nowrap;border:none;background:var(--gold);color:#1a1304;font-weight:700;font-size:11.5px;padding:7px 12px;border-radius:8px;cursor:pointer}
+  /* H5 桌面视图 */
+  .webwrap{height:100%;display:flex;flex-direction:column;background:var(--bg)}
+  .webhd{display:flex;align-items:center;gap:10px;padding:11px 16px;background:#fff;border-bottom:1px solid var(--line)}
+  .webhd .nm{font-weight:800;font-size:14px}.webhd .nm b{color:var(--gold-d)}
+  .webbody{flex:1;overflow-y:auto;padding:14px 16px}
+  .webtool{margin-bottom:4px;width:100%}
   .toast{position:absolute;left:50%;bottom:74px;transform:translateX(-50%) translateY(20px);background:#1e2a36;color:#fff;font-size:12.5px;padding:10px 16px;border-radius:24px;opacity:0;pointer-events:none;transition:.25s;z-index:20;white-space:nowrap}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   .dlnum{font-size:11px;font-weight:700;color:var(--gold-d);background:#fff7e6;border:1px solid #f0dca6;border-radius:20px;padding:1px 9px;margin-left:8px}
@@ -251,7 +340,7 @@
   </div>
 
   <!-- ============== A · 管理后台 ============== -->
-  <div class="secline"><div class="n">A</div><h2>管理后台</h2><span>登录 → 点赛事卡片进素材库 → 批量上传 / 水印设置</span></div>
+  <div class="secline"><div class="n">A</div><h2>管理后台</h2><span>登录后进入素材库（赛事=顶级目录）：目录多语言+装饰图+增删改查+移动，照片可多选挪动</span></div>
   <div class="stage">
     <div class="device" id="admin">
       <div class="browser">
@@ -266,68 +355,67 @@
                 <p style="color:var(--muted);font-size:12px;margin:0 0 16px">内部系统 · 账号由管理员分配</p>
                 <label class="lbl">账号</label><input class="inp" placeholder="管理员账号" value="admin@kpclive">
                 <label class="lbl">密码</label><input class="inp" type="password" value="••••••••">
-                <button class="btn pri" data-go="a-events" style="width:100%;justify-content:center;margin-top:18px">登 录</button>
+                <button class="btn pri" data-go="a-library" style="width:100%;justify-content:center;margin-top:18px">登 录</button>
                 <p style="text-align:center;color:#aab2bc;font-size:11px;margin:13px 0 0">角色：管理员 / 上传员</p>
               </div>
             </div>
           </div>
 
-          <!-- A2 赛事 -->
-          <div class="screen" id="a-events">
-            <div class="admin">
-              <div class="aside"><div class="al"><span class="lg">KPC</span> 官方相册</div>
-                <div class="nav">
-                  <a class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>赛事管理</a>
-                  <a data-go="a-library"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l2-2h5l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2z"/></svg>素材库</a>
-                  <a data-go="a-watermark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16l5-6 4 4 3-3 4 5"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>水印设置</a>
-                </div></div>
-              <div class="acontent">
-                <div class="ahd"><h3>赛事管理</h3><button class="btn pri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>新建赛事</button></div>
-                <div class="banner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
-                  所有赛事共用<b>一个全局人脸库</b>：同一选手横跨多个赛事，故不分库。选手一次自拍可匹配到所有赛事的照片。</div>
-                <div class="evgrid">
-                  <div class="evcard" data-go="a-library"><div class="evcover photo v1"><div class="scene"></div><span class="wm">KPC LIVE</span></div>
-                    <div class="evbody"><div class="nm">2026 KPC LIVE 总决赛 <span class="langtag" style="color:var(--gold-d)">译</span></div><div class="meta"><span>2026-08</span>·<span>1,240 张</span></div><div style="margin-top:8px"><span class="chip ok">● 已入全局人脸库</span></div></div></div>
-                  <div class="evcard" data-go="a-library"><div class="evcover photo v3"><div class="scene"></div><span class="wm">KPC LIVE</span></div>
-                    <div class="evbody"><div class="nm">2026 春季公开赛 <span class="langtag" style="color:var(--gold-d)">译</span></div><div class="meta"><span>2026-03</span>·<span>860 张</span></div><div style="margin-top:8px"><span class="chip ok">● 已入全局人脸库</span></div></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- A3 素材库 -->
+          <!-- A2 素材库（赛事 = 顶级目录，已合并原"赛事管理"） -->
           <div class="screen" id="a-library">
             <div class="admin">
               <div class="aside"><div class="al"><span class="lg">KPC</span> 官方相册</div>
                 <div class="nav">
-                  <a data-go="a-events"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>赛事管理</a>
                   <a class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l2-2h5l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2z"/></svg>素材库</a>
                   <a data-go="a-watermark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16l5-6 4 4 3-3 4 5"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>水印设置</a>
                 </div></div>
               <div class="acontent">
-                <div class="ahd"><div><div class="crumb">赛事管理 / 2026 总决赛</div><h3 style="margin-top:2px">素材库</h3></div>
-                  <div style="display:flex;gap:8px"><button class="btn gho"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l2-2h5l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2z"/></svg>新建目录</button>
-                    <button class="btn pri" data-go="a-upload"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 20h16"/></svg>批量上传</button></div></div>
+                <div class="ahd"><div><div class="crumb">素材库 / 总决赛 / Day1 / 主牌桌区</div><h3 style="margin-top:2px">素材库</h3></div>
+                  <button class="btn pri" data-go="a-upload"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 20h16"/></svg>批量上传</button></div>
+                <div class="banner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+                  赛事即<b>顶级目录</b>，往下任意层级。所有目录共用<b>一个全局人脸库</b>，选手一次自拍可匹配到所有赛事的照片。</div>
                 <div class="lib">
                   <div class="tree">
-                    <div class="tnode"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>总决赛 <span class="langtag" style="color:var(--gold-d)">译</span></div>
-                    <div class="tnode lv2"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>Day 1</div>
-                    <div class="tnode lv3 on">主牌桌区</div>
-                    <div class="tnode lv3">颁奖区</div>
-                    <div class="tnode lv2"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 7l5 5-5 5z"/></svg>Day 2</div>
-                    <div class="tnode lv2"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 7l5 5-5 5z"/></svg>选手合影</div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><span style="font-weight:700;font-size:12px;color:var(--muted)">目录树</span>
+                      <button class="btn pri" data-open="m-dir-edit" style="padding:4px 9px;font-size:11px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>新建目录</button></div>
+                    <div class="tnode"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>总决赛<span class="langtag" style="color:var(--gold-d);margin-left:5px">译</span>
+                      <span class="acts"><button data-open="m-dir-edit" title="编辑"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4L18 10l-4-4L4 16z"/></svg></button><button data-open="m-dir-edit" title="新建子目录"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button><button data-open="m-dir-picker" title="移动"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18M9 6l3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3M18 9l3 3-3 3"/></svg></button><button data-open="m-dir-del" title="删除"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></button></span></div>
+                    <div class="tnode lv2"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>Day 1
+                      <span class="acts"><button data-open="m-dir-edit" title="编辑"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4L18 10l-4-4L4 16z"/></svg></button><button data-open="m-dir-edit" title="新建子目录"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button><button data-open="m-dir-picker" title="移动"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18M9 6l3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3M18 9l3 3-3 3"/></svg></button><button data-open="m-dir-del" title="删除"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></button></span></div>
+                    <div class="tnode lv3 on">主牌桌区
+                      <span class="acts"><button data-open="m-dir-edit" title="编辑"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4L18 10l-4-4L4 16z"/></svg></button><button data-open="m-dir-edit" title="新建子目录"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button><button data-open="m-dir-picker" title="移动"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18M9 6l3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3M18 9l3 3-3 3"/></svg></button><button data-open="m-dir-del" title="删除"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></button></span></div>
+                    <div class="tnode lv3">颁奖区
+                      <span class="acts"><button data-open="m-dir-edit" title="编辑"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4L18 10l-4-4L4 16z"/></svg></button><button data-open="m-dir-edit" title="新建子目录"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button><button data-open="m-dir-picker" title="移动"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18M9 6l3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3M18 9l3 3-3 3"/></svg></button><button data-open="m-dir-del" title="删除"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></button></span></div>
+                    <div class="tnode lv2"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 7l5 5-5 5z"/></svg>Day 2
+                      <span class="acts"><button data-open="m-dir-edit" title="编辑"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4L18 10l-4-4L4 16z"/></svg></button><button data-open="m-dir-edit" title="新建子目录"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button><button data-open="m-dir-picker" title="移动"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18M9 6l3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3M18 9l3 3-3 3"/></svg></button><button data-open="m-dir-del" title="删除"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></button></span></div>
+                    <div class="tnode lv2"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 7l5 5-5 5z"/></svg>选手合影
+                      <span class="acts"><button data-open="m-dir-edit" title="编辑"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20h4L18 10l-4-4L4 16z"/></svg></button><button data-open="m-dir-edit" title="新建子目录"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></button><button data-open="m-dir-picker" title="移动"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18M9 6l3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3M18 9l3 3-3 3"/></svg></button><button data-open="m-dir-del" title="删除"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg></button></span></div>
                   </div>
                   <div class="libmain">
-                    <div class="libtools"><span>Day1 / 主牌桌区 · 128 张</span><span>排序：上传时间 ▾</span></div>
+                    <div class="libtools">
+                      <div class="atool-normal" style="display:flex;align-items:center;justify-content:space-between;width:100%">
+                        <span>Day1 / 主牌桌区 · 128 张</span>
+                        <span style="display:flex;align-items:center;gap:10px"><button class="btn gho" data-action="selmode" style="padding:5px 11px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h9"/></svg>多选</button><span>排序：上传时间 ▾</span></span>
+                      </div>
+                      <div class="atool-sel" style="align-items:center;gap:10px;width:100%">
+                        <button class="btn gho" data-action="selcancel" style="padding:5px 11px">取消</button>
+                        <span style="font-size:12px">已选 <b class="selcount">0</b> 张</span>
+                        <span style="margin-left:auto;display:flex;gap:8px">
+                          <button class="btn gho" data-open="m-dir-picker" style="padding:5px 11px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18M9 6l3-3 3 3M9 18l3 3 3-3M6 9l-3 3 3 3M18 9l3 3-3 3"/></svg>移动到…</button>
+                          <button class="btn gho" data-open="m-photo-del" style="padding:5px 11px;color:var(--red)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>删除</button>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="banner" style="background:#fde9e7;border-color:#f3b5af;color:#c23b30;justify-content:space-between"><span style="display:flex;align-items:center;gap:9px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>1 张照片人脸入库失败：仅能目录浏览，选手搜不到本人</span><button class="btn gho" data-toast="已重新提交人脸检测" style="padding:5px 11px;color:#c23b30;border-color:#f3b5af">重试全部</button></div>
                     <div class="pgrid">
-                      <div class="photo v1"><div class="scene"></div><span class="badge gold">脸 ×3</span><span class="wm">KPC LIVE</span></div>
-                      <div class="photo v2"><div class="scene"></div><span class="badge gold">脸 ×1</span><span class="wm">KPC LIVE</span></div>
-                      <div class="photo v3"><div class="scene"></div><span class="badge gold">脸 ×2</span><span class="wm">KPC LIVE</span></div>
-                      <div class="photo v4"><div class="scene"></div><span class="badge" style="background:rgba(226,87,76,.85)">无脸</span><span class="wm">KPC LIVE</span></div>
-                      <div class="photo v5"><div class="scene"></div><span class="badge gold">脸 ×4</span><span class="wm">KPC LIVE</span></div>
-                      <div class="photo v1"><div class="scene"></div><span class="badge gold">脸 ×2</span><span class="wm">KPC LIVE</span></div>
-                      <div class="photo v3"><div class="scene"></div><span class="badge gold">脸 ×1</span><span class="wm">KPC LIVE</span></div>
-                      <div class="photo v2"><div class="scene"></div><span class="badge gold">脸 ×2</span><span class="wm">KPC LIVE</span></div>
+                      <div class="photo v1"><div class="scene"></div><span class="badge gold">脸 ×3</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                      <div class="photo v2"><div class="scene"></div><span class="badge gold">脸 ×1</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                      <div class="photo v3"><div class="scene"></div><span class="badge gold">脸 ×2</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                      <div class="photo v4"><div class="scene"></div><span class="badge" style="background:rgba(226,87,76,.85)">无脸</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                      <div class="photo v5"><div class="scene"></div><span class="badge gold">脸 ×4</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                      <div class="photo v1"><div class="scene"></div><span class="badge gold">脸 ×2</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                      <div class="photo v3" data-toast="已重新提交该照片的人脸检测"><div class="scene"></div><span class="badge" style="background:rgba(226,87,76,.9)">待重试</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                      <div class="photo v2"><div class="scene"></div><span class="badge gold">脸 ×2</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
                     </div>
                   </div>
                 </div>
@@ -339,8 +427,8 @@
           <div class="screen" id="a-upload">
             <div class="admin">
               <div class="aside"><div class="al"><span class="lg">KPC</span> 官方相册</div>
-                <div class="nav"><a data-go="a-events"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>赛事管理</a>
-                  <a class="on" data-go="a-library"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l2-2h5l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2z"/></svg>素材库</a></div></div>
+                <div class="nav"><a class="on" data-go="a-library"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l2-2h5l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2z"/></svg>素材库</a>
+                  <a data-go="a-watermark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16l5-6 4 4 3-3 4 5"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>水印设置</a></div></div>
               <div class="acontent">
                 <div class="ahd"><div><div class="crumb" data-go="a-library" style="cursor:pointer">‹ 总决赛 / Day1 / 主牌桌区</div><h3 style="margin-top:2px">批量上传</h3></div>
                   <button class="btn gho" data-go="a-library">完成</button></div>
@@ -361,14 +449,13 @@
           <div class="screen" id="a-watermark">
             <div class="admin">
               <div class="aside"><div class="al"><span class="lg">KPC</span> 官方相册</div>
-                <div class="nav"><a data-go="a-events"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>赛事管理</a>
-                  <a data-go="a-library"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l2-2h5l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2z"/></svg>素材库</a>
+                <div class="nav"><a data-go="a-library"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l2-2h5l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2z"/></svg>素材库</a>
                   <a class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 16l5-6 4 4 3-3 4 5"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>水印设置</a></div></div>
               <div class="acontent">
                 <div class="ahd"><h3>水印设置</h3><span class="chip muted">全局默认（赛事可覆盖）</span></div>
                 <div class="acard" style="padding:18px"><div class="lib" style="gap:18px">
                   <div style="flex:1">
-                    <label class="lbl">水印类型</label><div class="seg"><b class="on">图片 Logo</b><b>文字</b></div>
+                    <label class="lbl">水印类型</label><div style="font-size:12.5px;color:var(--ink);font-weight:600">图片 Logo<span style="color:var(--muted);font-weight:400">（仅支持图片水印）</span></div>
                     <label class="lbl">上传水印图</label><div class="drop" style="padding:14px"><div style="font-size:12px">点击上传 PNG（透明底）</div></div>
                     <label class="lbl">位置</label><div class="seg"><b>左上</b><b>居中</b><b class="on">右下</b><b>平铺</b></div>
                     <label class="lbl">不透明度 · 35%</label><input class="range" type="range" value="35">
@@ -382,10 +469,69 @@
             </div>
           </div>
 
+          <!-- 目录信息：新建 / 编辑（多语言 + 装饰图） -->
+          <div class="modal" id="m-dir-edit">
+            <div class="dim" data-close></div>
+            <div class="adlg">
+              <h4>目录信息</h4><div class="sub">「新建目录」建一级目录；子目录在一级目录下用节点的「新建子目录」创建</div>
+              <label class="lbl">目录名称（多语言）</label>
+              <div class="langtabs">
+                <b class="on" data-langtab data-val="总决赛">中</b>
+                <b data-langtab data-val="總決賽">繁</b>
+                <b data-langtab data-val="Grand Final">EN</b>
+                <b data-langtab data-val="グランドファイナル">日</b>
+                <b data-langtab data-val="그랜드 파이널">한</b>
+              </div>
+              <input class="inp" id="dir-name-input" value="总决赛">
+              <label class="lbl">装饰图（封面）</label>
+              <div class="coverup"><div class="cv photo v1"><div class="scene"></div></div><button class="btn gho">更换图片</button></div>
+              <label class="lbl">日期（一级目录可填）</label>
+              <input class="inp" type="text" value="2026-08" placeholder="如 2026-08">
+              <div class="dacts"><span class="linkdel" data-open="m-dir-del">删除目录</span><button class="btn gho" data-close>取消</button><button class="btn pri" data-action="diredit-save">保存</button></div>
+            </div>
+          </div>
+
+          <!-- 移动到…（目录选择器） -->
+          <div class="modal" id="m-dir-picker">
+            <div class="dim" data-close></div>
+            <div class="adlg">
+              <h4>移动到…</h4><div class="sub">选择目标目录（移动目录或所选素材）</div>
+              <div class="picktree">
+                <div class="pt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l2-2h5l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2z"/></svg>总决赛</div>
+                <div class="pt lv2">Day 1</div>
+                <div class="pt lv3 on">主牌桌区</div>
+                <div class="pt lv3">颁奖区</div>
+                <div class="pt lv2">Day 2</div>
+                <div class="pt lv2">选手合影</div>
+              </div>
+              <div class="dacts"><button class="btn gho" data-close>取消</button><button class="btn pri" data-action="picker-confirm">确认移动</button></div>
+            </div>
+          </div>
+
+          <!-- 删除目录确认 -->
+          <div class="modal" id="m-dir-del">
+            <div class="dim" data-close></div>
+            <div class="adlg">
+              <h4>删除该目录？</h4><div class="sub">将一并删除其下全部子目录与照片，且不可恢复。</div>
+              <div class="dacts"><button class="btn gho" data-close>取消</button><button class="btn pri" style="background:var(--red);color:#fff;box-shadow:none" data-action="dirdel-confirm">删除</button></div>
+            </div>
+          </div>
+
+          <!-- 删除所选照片确认 -->
+          <div class="modal" id="m-photo-del">
+            <div class="dim" data-close></div>
+            <div class="adlg">
+              <h4>删除所选照片？</h4><div class="sub">将从该目录移除所选照片，且不可恢复。</div>
+              <div class="dacts"><button class="btn gho" data-close>取消</button><button class="btn pri" style="background:var(--red);color:#fff;box-shadow:none" data-action="photodel-confirm">删除</button></div>
+            </div>
+          </div>
+
+          <div class="toast" id="toast"></div>
+
         </div>
       </div>
     </div>
-    <div class="cap">入口：登录 → 点赛事卡片 → 素材库 → 批量上传 / 水印设置。<b>人脸库全局共用</b>，照片入库时记录"人脸→照片→赛事"。</div>
+    <div class="cap">素材库即唯一主结构：赛事是顶级目录，往下任意层级。悬停目录可见 编辑/新建子级/移动/删除；目录信息含<b>多语言名称 + 装饰图</b>。照片点"多选"可批量移动到其它目录或删除。<b>人脸库全局共用</b>。</div>
   </div>
 
   <!-- ============== B · H5 选手端 ============== -->
@@ -401,15 +547,25 @@
             <div class="h5pad">
               <div class="h5top"><div class="hero">KPC <b>LIVE</b> 相册</div><button class="globe" data-open="m-lang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg><span class="lng">中文</span></button></div>
               <div class="h5sub" style="margin:-2px 2px 10px">上传一张自拍，一次找到你在<b style="color:var(--gold-d)">所有赛事</b>的照片 <span class="langtag" style="color:var(--muted)">译</span></div>
+              <div class="remembered" style="display:none;margin-bottom:12px">
+                <div class="rt">👋 欢迎回来</div>
+                <div class="rs">已在本设备记住你的匹配结果，无需重新上传自拍 <span class="langtag" style="color:var(--gold-d)">译</span></div>
+                <div class="rbtns"><button class="h5btn pri" data-go="p-results" style="flex:1.5">查看我的照片</button><button class="h5btn gho" data-open="m-consent" style="flex:1">重新匹配</button></div>
+              </div>
               <div class="matchcard" data-open="m-consent">
                 <div class="cam"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.2"/></svg></div>
-                <div class="t">上传自拍 · 开始匹配</div><div class="s">人脸检索横跨全部赛事</div>
+                <div class="t">上传自拍 · 开始匹配</div><div class="s">用你的脸自动匹配，一键找出官方相册里所有拍到你的照片（横跨全部赛事）</div>
               </div>
               <div class="demolink" data-action="matchempty">（原型演示）查看「未匹配到」状态 →</div>
               <div class="seclbl">或按赛事浏览</div>
-              <div class="evrow" data-go="p-browse-root"><div class="cov photo v1"><div class="scene"></div><div class="scrim"></div><span class="wm">KPC LIVE</span></div><div class="info"><b>2026 KPC LIVE 总决赛</b><div class="m">2026-08 · 1,240 张</div></div></div>
-              <div class="evrow" data-go="p-browse-root"><div class="cov photo v3"><div class="scene"></div><div class="scrim"></div><span class="wm">KPC LIVE</span></div><div class="info"><b>2026 春季公开赛</b><div class="m">2026-03 · 860 张</div></div></div>
-              <div class="evrow" data-go="p-browse-root"><div class="cov photo v4"><div class="scene"></div><div class="scrim"></div><span class="wm">KPC LIVE</span></div><div class="info"><b>2025 城市邀请赛 · 上海站</b><div class="m">2025-11 · 520 张</div></div></div>
+              <div class="searchbar" data-ds="" data-de="">
+                <div class="sinput"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="搜索赛事名称（支持多语言）"></div>
+                <button class="datebtn" data-open="m-calendar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>日期</button>
+              </div>
+              <div class="filterchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg><span class="ftext"></span><span class="x" data-action="filter-clear">✕</span></div>
+              <div class="evrow" data-date="2026-08-15" data-go="p-browse-root"><div class="cov photo v1"><div class="scene"></div><div class="scrim"></div><span class="wm">KPC LIVE</span></div><div class="info"><b>2026 KPC LIVE 总决赛</b><div class="m">2026-08 · 1,240 张</div></div></div>
+              <div class="evrow" data-date="2026-03-20" data-go="p-browse-root"><div class="cov photo v3"><div class="scene"></div><div class="scrim"></div><span class="wm">KPC LIVE</span></div><div class="info"><b>2026 春季公开赛</b><div class="m">2026-03 · 860 张</div></div></div>
+              <div class="evrow" data-date="2025-11-10" data-go="p-browse-root"><div class="cov photo v4"><div class="scene"></div><div class="scrim"></div><span class="wm">KPC LIVE</span></div><div class="info"><b>2025 城市邀请赛 · 上海站</b><div class="m">2025-11 · 520 张</div></div></div>
             </div>
           </div>
 
@@ -444,19 +600,19 @@
               <div class="resultbar"><b>共 24 张 · 横跨 2 个赛事</b><span class="h5sub">相似度排序</span></div>
               <div class="grouplabel">2026 KPC LIVE 总决赛 <span>· 18 张</span></div>
               <div class="h5grid">
-                <div class="photo v1" data-open="m-download"><div class="scene"></div><span class="badge gold">98%</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
-                <div class="photo v5" data-open="m-download"><div class="scene"></div><span class="badge gold">95%</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
-                <div class="photo v3" data-open="m-download"><div class="scene"></div><span class="badge">91%</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
-                <div class="photo v2" data-open="m-download"><div class="scene"></div><span class="badge">88%</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                <div class="photo v1" data-open="m-download"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                <div class="photo v5" data-open="m-download"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                <div class="photo v3" data-open="m-download"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                <div class="photo v2" data-open="m-download"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
               </div>
               <div class="grouplabel">2026 春季公开赛 <span>· 6 张</span></div>
               <div class="h5grid">
-                <div class="photo v4" data-open="m-download"><div class="scene"></div><span class="badge">86%</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
-                <div class="photo v1" data-open="m-download"><div class="scene"></div><span class="badge">84%</span><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                <div class="photo v4" data-open="m-download"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                <div class="photo v1" data-open="m-download"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
               </div>
             </div>
-            <div class="bottombar bar-normal"><button class="h5btn gho" data-action="selmode" style="flex:1">多选</button><button class="h5btn pri" data-action="batchall" style="flex:1.6">下载全部（24）</button></div>
-            <div class="bottombar bar-sel"><button class="h5btn gho" data-action="selcancel">取消</button><span class="selinfo">已选 <b class="selcount">0</b> 张</span><button class="h5btn pri" data-action="batchsel">下载所选</button></div>
+            <div class="bottombar bar-normal"><button class="h5btn gho" data-action="selmode" style="flex:1">多选</button><button class="h5btn pri" data-action="batchall" style="flex:1.6">保存全部（24）</button></div>
+            <div class="bottombar bar-sel"><button class="h5btn gho" data-action="selcancel">取消</button><span class="selinfo">已选 <b class="selcount">0</b> 张</span><button class="h5btn pri" data-action="batchsel">保存所选</button></div>
           </div>
 
           <!-- B2b 无匹配空状态 -->
@@ -481,6 +637,7 @@
             <div class="h5pad">
               <div class="h5top"><span class="bk" data-go="p-home">‹</span><h4>2026 总决赛</h4><button class="globe" data-open="m-lang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg><span class="lng">中文</span></button></div>
               <div class="h5crumb">总决赛 · 选择目录</div>
+              <div class="folder" data-go="p-browse-empty"><span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l2-2h5l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2z"/></svg></span><span class="fn">Day 3（暂无照片）</span><span class="ct">0 ›</span></div>
               <div class="folder" data-go="p-browse-grid"><span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l2-2h5l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2z"/></svg></span><span class="fn">Day 1</span><span class="ct">540 ›</span></div>
               <div class="folder" data-go="p-browse-grid"><span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l2-2h5l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2z"/></svg></span><span class="fn">Day 2</span><span class="ct">480 ›</span></div>
               <div class="folder" data-go="p-browse-grid"><span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l2-2h5l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2z"/></svg></span><span class="fn">选手合影</span><span class="ct">220 ›</span></div>
@@ -504,8 +661,21 @@
                 <div class="photo v5" data-open="m-download"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm" style="font-size:6px">KPC</span></div>
               </div>
             </div>
-            <div class="bottombar bar-normal"><button class="h5btn pri" data-action="selmode" style="flex:1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h9"/></svg>多选下载</button></div>
-            <div class="bottombar bar-sel"><button class="h5btn gho" data-action="selcancel">取消</button><span class="selinfo">已选 <b class="selcount">0</b> 张</span><button class="h5btn pri" data-action="batchsel">下载所选</button></div>
+            <div class="bottombar bar-normal"><button class="h5btn pri" data-action="selmode" style="flex:1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h9"/></svg>多选保存</button></div>
+            <div class="bottombar bar-sel"><button class="h5btn gho" data-action="selcancel">取消</button><span class="selinfo">已选 <b class="selcount">0</b> 张</span><button class="h5btn pri" data-action="batchsel">保存所选</button></div>
+          </div>
+
+          <!-- 浏览空状态（空目录/空赛事） -->
+          <div class="screen" id="p-browse-empty">
+            <div class="h5pad">
+              <div class="h5top"><span class="bk" data-go="p-browse-root">‹</span><h4>Day 3</h4><button class="globe" data-open="m-lang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg><span class="lng">中文</span></button></div>
+              <div class="empty">
+                <div class="ec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 16l5-5 4 4"/><path d="M4 4l16 16"/></svg></div>
+                <div class="et">该目录暂无照片</div>
+                <div class="es">这里还没有上传照片，换个目录看看，或稍后再来。</div>
+                <div class="ebtns"><button class="h5btn gho" data-go="p-browse-root">返回目录列表</button></div>
+              </div>
+            </div>
           </div>
 
           <!-- modals -->
@@ -513,7 +683,7 @@
             <div class="dim" data-close></div>
             <div class="sheet"><div class="grip"></div>
               <h4>使用前请确认 <span class="langtag" style="color:var(--gold-d)">译</span></h4>
-              <p>你上传的自拍仅用于本次人脸检索（横跨所有赛事），<b>匹配完成后立即删除、不作任何存储</b>。请仅领取本人照片。</p>
+              <p>你上传的自拍仅用于本次人脸检索（横跨所有赛事），<b>服务器匹配后立即删除、不存储自拍</b>。仅在<b>你本人的设备上记住匹配结果</b>，下次进来无需再次上传。请仅领取本人照片。</p>
               <div style="display:flex;gap:10px"><button class="h5btn gho" data-close style="flex:1">取消</button><button class="h5btn pri" data-action="toselfie" style="flex:1.4">同意并继续</button></div>
             </div>
           </div>
@@ -526,8 +696,15 @@
                 <div class="o sel" data-pick><div class="oi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M13 16h6v3"/></svg></div><b>带水印版</b><span>含官方水印 · 原图</span></div>
                 <div class="o" data-pick><div class="oi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 13l3 3 5-6"/></svg></div><b>无水印版</b><span>纯净原图</span></div>
               </div>
-              <button class="h5btn pri" data-action="download" style="width:100%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v12M7 11l5 5 5-5"/><path d="M5 20h14"/></svg>下载</button>
-              <p class="h5sub" style="text-align:center;margin:10px 0 0">两版均为原图分辨率 · 批量同样可选版本</p>
+              <label class="lbl" style="color:var(--muted)">你的设备</label>
+              <div class="pfseg">
+                <b class="on" data-pf="ios"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 19h2"/></svg>iPhone（iOS）</b>
+                <b data-pf="android"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2.5"/><path d="M9 5h6"/></svg>Android</b>
+              </div>
+              <div class="pfnote" id="pfnote">在 iPhone 上：点「保存」唤起系统分享 → 选「存储图像」即可存入相册；也可直接<b>长按图片</b>选「添加到照片」。</div>
+              <button class="h5btn pri" data-action="download" style="width:100%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v12M7 11l5 5 5-5"/><path d="M5 20h14"/></svg>保存到相册</button>
+              <div class="appguide" id="dl-appguide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg><span class="gt">多张想<b>一键批量存相册</b>？用 KPC LIVE App 打开更顺畅</span><button class="appbtn" data-toast="正在打开 KPC LIVE App…">用 App 打开</button></div>
+              <p class="h5sub" style="text-align:center;margin:10px 0 0">两版均为原图分辨率 · 多张逐一保存到相册</p>
             </div>
           </div>
 
@@ -545,16 +722,207 @@
             </div>
           </div>
 
+          <div class="modal" id="m-calendar">
+            <div class="dim" data-close></div>
+            <div class="sheet"><div class="grip"></div>
+              <h4>按日期筛选 <span class="langtag" style="color:var(--gold-d)">译</span></h4>
+              <div class="calwrap" data-y="2026" data-m="8" data-start="" data-end="">
+                <div class="calhead"><span class="calnav" data-cal="prev">‹</span><span class="caltitle">2026年8月</span><span class="calnav" data-cal="next">›</span></div>
+                <div class="caldow"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
+                <div class="calgrid"></div>
+              </div>
+              <p class="h5sub" style="margin:10px 0 0">金点 = 当天有赛事照片 · 点选起止两天即为范围</p>
+              <div style="display:flex;gap:10px;margin-top:12px"><button class="h5btn gho" data-action="cal-clear" style="flex:1">清除</button><button class="h5btn pri" data-action="cal-apply" style="flex:1.4">确定</button></div>
+            </div>
+          </div>
+
           <div class="modal" id="m-loading">
             <div class="dim"></div>
             <div class="loadbox"><div class="spinner"></div><div style="font-size:13px;font-weight:600">正在匹配你的照片…</div><div style="font-size:11px;color:var(--muted);margin-top:3px">检索全部赛事</div></div>
+          </div>
+
+          <div class="modal" id="m-viewer">
+            <div class="viewer">
+              <div class="vtop"><span>预览</span><span class="vclose" data-close>✕</span></div>
+              <div class="vbody">
+                <span class="vnav prev" data-view="prev">‹</span>
+                <div class="vphoto photo v1" data-vi="0"><div class="scene"></div><span class="wm" style="font-size:12px">KPC LIVE</span></div>
+                <span class="vnav next" data-view="next">›</span>
+              </div>
+              <div class="vbar"><button class="h5btn pri" data-action="view-save" style="width:100%"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:17px;height:17px"><path d="M12 4v12M7 11l5 5 5-5"/><path d="M5 20h14"/></svg>保存到相册</button></div>
+            </div>
           </div>
 
           <div class="toast" id="toast"></div>
         </div>
       </div></div>
     </div>
-    <div class="cap">流程：首屏上传自拍 → 同意 → 匹配中 → 跨赛事结果（按赛事分组）→ 点照片选版本下载，或点"多选"勾选后批量下载。语言在右上角切换。</div>
+    <div class="cap">流程：首屏上传自拍 → 同意 → 匹配中 → 跨赛事结果（按赛事分组）→ 点照片选版本下载，或点"多选"勾选后批量保存。语言在右上角切换。</div>
+  </div>
+
+  <!-- ============== C · H5 桌面端（同一链接在电脑浏览器打开） ============== -->
+  <div class="secline"><div class="n">C</div><h2>H5 桌面端</h2><span>同一链接在电脑打开：点照片进大图后下载原图（移动端则走存相册 + App 引导）</span></div>
+  <div class="stage">
+    <div class="device" id="webh5">
+      <div class="browser">
+        <div class="bbar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="u">photos.kpclive.com（电脑浏览器）</span></div>
+        <div class="bview">
+          <!-- 桌面端上传入口（仅上传照片，无实时自拍） -->
+          <div class="screen active" id="w-upload">
+            <div class="webwrap">
+              <div class="webhd"><div class="logo" style="width:30px;height:30px;font-size:9px">KPC</div><div class="nm">KPC <b>LIVE</b> 官方相册</div><button class="globe" style="margin-left:auto" data-toast="切换语言（示意）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg><span>中文</span></button></div>
+              <div class="webbody">
+                <div style="max-width:520px;margin:0 auto">
+                  <div class="remembered" style="display:none;margin-bottom:14px">
+                    <div class="rt">👋 欢迎回来</div>
+                    <div class="rs">已在本设备记住你的匹配结果，无需重新上传自拍</div>
+                    <div class="rbtns"><button class="btn pri" data-go="w-results">查看我的照片</button><button class="btn gho" data-action="wmatch">重新匹配</button></div>
+                  </div>
+                  <div style="border:1px solid var(--line);background:#fff;border-radius:14px;padding:18px;text-align:center">
+                    <div style="width:50px;height:50px;border-radius:50%;background:var(--gold);color:#1a1304;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 6px 16px rgba(231,181,60,.35)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:26px;height:26px"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.2"/></svg></div>
+                    <h3 style="margin:0 0 6px;font-size:16px">上传自拍，匹配你在所有赛事的照片</h3>
+                    <p style="font-size:12.5px;color:var(--muted);margin:0 0 16px">支持<b style="color:var(--gold-d)">调用摄像头实时自拍</b>，或选择本地照片上传。照片仅用于本次检索、匹配后立即删除。</p>
+                    <div style="display:flex;flex-direction:column;gap:10px;text-align:left">
+                      <div class="pickopt" data-go="w-camera"><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h3l2-2h6l2 2h3v11H4z"/><circle cx="12" cy="13" r="3.2"/></svg></span><span class="pt"><b>实时自拍</b><small>调用电脑摄像头拍一张</small></span></div>
+                      <div class="pickopt" data-action="wmatch"><span class="pi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 15l5-5 4 4 3-3 6 6"/><circle cx="8.5" cy="9" r="1.4"/></svg></span><span class="pt"><b>上传照片</b><small>选择本地已有照片</small></span></div>
+                    </div>
+                  </div>
+                  <div class="seclbl" style="margin-top:20px">或按赛事浏览</div>
+                  <div class="searchbar" data-ds="" data-de="">
+                    <div class="sinput"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="搜索赛事名称（支持多语言）"></div>
+                    <button class="datebtn" data-open="m-calendar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>日期范围</button>
+                  </div>
+                  <div class="filterchip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg><span class="ftext"></span><span class="x" data-action="filter-clear">✕</span></div>
+                  <div class="evrow" data-date="2026-08-15" data-go="w-browse-root"><div class="cov photo v1"><div class="scene"></div><div class="scrim"></div><span class="wm">KPC LIVE</span></div><div class="info"><b>2026 KPC LIVE 总决赛</b><div class="m">2026-08 · 1,240 张</div></div></div>
+                  <div class="evrow" data-date="2026-03-20" data-go="w-browse-root"><div class="cov photo v3"><div class="scene"></div><div class="scrim"></div><span class="wm">KPC LIVE</span></div><div class="info"><b>2026 春季公开赛</b><div class="m">2026-03 · 860 张</div></div></div>
+                  <div class="evrow" data-date="2025-11-10" data-go="w-browse-root"><div class="cov photo v4"><div class="scene"></div><div class="scrim"></div><span class="wm">KPC LIVE</span></div><div class="info"><b>2025 城市邀请赛 · 上海站</b><div class="m">2025-11 · 520 张</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 桌面端 实时自拍（摄像头取景） -->
+          <div class="screen" id="w-camera">
+            <div class="webwrap">
+              <div class="webhd"><span class="bk" data-go="w-upload" style="cursor:pointer;color:var(--muted);font-size:20px;line-height:1;margin-right:2px">‹</span><div class="logo" style="width:30px;height:30px;font-size:9px">KPC</div><div class="nm">KPC <b>LIVE</b> 官方相册</div><button class="globe" style="margin-left:auto" data-toast="切换语言（示意）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg><span>中文</span></button></div>
+              <div class="webbody" style="display:flex;align-items:center;justify-content:center">
+                <div style="max-width:430px;width:100%;text-align:center">
+                  <div class="viewfinder"><span class="rec"><i></i>摄像头预览（示意）</span><span class="ring"></span><span class="vt">请将面部置于框内</span></div>
+                  <p class="h5sub" style="margin:0 0 12px">正对摄像头、光线充足；首次使用需在浏览器允许摄像头权限</p>
+                  <button class="btn pri" data-action="wmatch" style="justify-content:center;width:100%;padding:11px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="4"/><path d="M4 8h3l2-2h6l2 2h3v11H4z"/></svg>拍摄并开始匹配</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="screen" id="w-results">
+            <div class="webwrap">
+              <div class="webhd"><span class="bk" data-go="w-upload" style="cursor:pointer;color:var(--muted);font-size:20px;line-height:1;margin-right:2px">‹</span><div class="logo" style="width:30px;height:30px;font-size:9px">KPC</div><div class="nm">KPC <b>LIVE</b> 官方相册</div><button class="globe" style="margin-left:auto" data-toast="切换语言（示意）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg><span>中文</span></button></div>
+              <div class="webbody">
+                <div class="webtool" style="display:flex;align-items:center;justify-content:space-between">
+                  <span style="font-size:13px;font-weight:700">找到含你的照片 · 24 张 <span style="font-weight:400;color:var(--muted)">· 横跨 2 个赛事</span></span>
+                  <span style="font-size:12px;color:var(--muted)">点照片查看大图并下载原图</span>
+                </div>
+                <div class="grouplabel" style="margin-top:14px">2026 KPC LIVE 总决赛 <span>· 18 张</span></div>
+                <div class="pgrid">
+                  <div class="photo v1"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                  <div class="photo v5"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                  <div class="photo v3"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                  <div class="photo v2"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                </div>
+                <div class="grouplabel">2026 春季公开赛 <span>· 6 张</span></div>
+                <div class="pgrid">
+                  <div class="photo v4"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                  <div class="photo v1"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                  <div class="photo v3"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                  <div class="photo v5"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- 桌面端 按赛事浏览：目录列表 -->
+          <div class="screen" id="w-browse-root">
+            <div class="webwrap">
+              <div class="webhd"><span class="bk" data-go="w-upload" style="cursor:pointer;color:var(--muted);font-size:20px;line-height:1;margin-right:2px">‹</span><div class="logo" style="width:30px;height:30px;font-size:9px">KPC</div><div class="nm">KPC <b>LIVE</b> 官方相册</div><button class="globe" style="margin-left:auto" data-toast="切换语言（示意）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg><span>中文</span></button></div>
+              <div class="webbody"><div style="max-width:520px;margin:0 auto">
+                <div class="h5crumb">2026 总决赛 · 选择目录</div>
+                <div class="folder" data-go="w-browse-empty"><span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l2-2h5l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2z"/></svg></span><span class="fn">Day 3（暂无照片）</span><span class="ct">0 ›</span></div>
+                <div class="folder" data-go="w-browse-grid"><span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l2-2h5l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2z"/></svg></span><span class="fn">Day 1</span><span class="ct">540 ›</span></div>
+                <div class="folder" data-go="w-browse-grid"><span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l2-2h5l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2z"/></svg></span><span class="fn">Day 2</span><span class="ct">480 ›</span></div>
+                <div class="folder" data-go="w-browse-grid"><span class="fi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7l2-2h5l2 2h7a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2z"/></svg></span><span class="fn">选手合影</span><span class="ct">220 ›</span></div>
+              </div></div>
+            </div>
+          </div>
+
+          <!-- 桌面端 目录内照片（点照片看大图并下载） -->
+          <div class="screen" id="w-browse-grid">
+            <div class="webwrap">
+              <div class="webhd"><span class="bk" data-go="w-browse-root" style="cursor:pointer;color:var(--muted);font-size:20px;line-height:1;margin-right:2px">‹</span><div class="logo" style="width:30px;height:30px;font-size:9px">KPC</div><div class="nm">KPC <b>LIVE</b> 官方相册</div><button class="globe" style="margin-left:auto" data-toast="切换语言（示意）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg><span>中文</span></button></div>
+              <div class="webbody">
+                <div class="webtool" style="display:flex;align-items:center;justify-content:space-between">
+                  <span style="font-size:13px;font-weight:700">总决赛 / Day 1 <span style="font-weight:400;color:var(--muted)">· 540 张</span></span>
+                  <span style="font-size:12px;color:var(--muted)">点照片查看大图并下载原图</span>
+                </div>
+                <div class="pgrid" style="margin-top:10px">
+                  <div class="photo v1"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                  <div class="photo v3"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                  <div class="photo v2"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                  <div class="photo v5"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                  <div class="photo v4"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                  <div class="photo v1"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                  <div class="photo v3"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                  <div class="photo v2"><div class="scene"></div><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5 9-10"/></svg></span><span class="wm">KPC LIVE</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 桌面端 浏览空状态 -->
+          <div class="screen" id="w-browse-empty">
+            <div class="webwrap">
+              <div class="webhd"><span class="bk" data-go="w-browse-root" style="cursor:pointer;color:var(--muted);font-size:20px;line-height:1;margin-right:2px">‹</span><div class="logo" style="width:30px;height:30px;font-size:9px">KPC</div><div class="nm">KPC <b>LIVE</b> 官方相册</div><button class="globe" style="margin-left:auto" data-toast="切换语言（示意）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 2.5 15.4 0 18M12 3c-2.5 2.6-2.5 15.4 0 18"/></svg><span>中文</span></button></div>
+              <div class="webbody" style="display:flex;align-items:center;justify-content:center">
+                <div class="empty">
+                  <div class="ec"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 16l5-5 4 4"/><path d="M4 4l16 16"/></svg></div>
+                  <div class="et">该目录暂无照片</div>
+                  <div class="es">这里还没有上传照片，换个目录看看，或稍后再来。</div>
+                  <div class="ebtns"><button class="btn gho" data-go="w-browse-root">返回目录列表</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal" id="m-calendar">
+            <div class="dim" data-close></div>
+            <div class="adlg" style="width:330px">
+              <h4>按日期范围筛选</h4><div class="sub">选择起止日期；金点为有赛事照片的日子</div>
+              <div class="calwrap" data-y="2026" data-m="8" data-start="" data-end="">
+                <div class="calhead"><span class="calnav" data-cal="prev">‹</span><span class="caltitle">2026年8月</span><span class="calnav" data-cal="next">›</span></div>
+                <div class="caldow"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
+                <div class="calgrid"></div>
+              </div>
+              <div class="dacts"><button class="btn gho" data-action="cal-clear">清除</button><button class="btn pri" data-action="cal-apply">确定</button></div>
+            </div>
+          </div>
+
+          <div class="modal" id="m-viewer">
+            <div class="viewer">
+              <div class="vtop"><span>预览</span><span class="vclose" data-close>✕</span></div>
+              <div class="vbody">
+                <span class="vnav prev" data-view="prev">‹</span>
+                <div class="vphoto photo v1" data-vi="0"><div class="scene"></div><span class="wm" style="font-size:12px">KPC LIVE</span></div>
+                <span class="vnav next" data-view="next">›</span>
+              </div>
+              <div class="vbar"><button class="btn pri" data-action="view-save" style="justify-content:center;width:100%;padding:11px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v12M7 11l5 5 5-5"/><path d="M5 20h14"/></svg>下载原图</button></div>
+            </div>
+          </div>
+
+          <div class="modal" id="m-wloading"><div class="dim"></div><div class="loadbox"><div class="spinner"></div><div style="font-size:13px;font-weight:600">正在匹配你的照片…</div><div style="font-size:11px;color:var(--muted);margin-top:3px">检索全部赛事</div></div></div>
+          <div class="toast" id="toast"></div>
+        </div>
+      </div>
+    </div>
+    <div class="cap">桌面端不出现"存相册 / App 引导"；点照片进大图后下载原图到电脑（单张）。移动端则走存相册 + 批量 App 引导。同样不向选手显示相似度。</div>
   </div>
 
 </div>
@@ -569,7 +937,37 @@ function toast(device,msg){ var t=device.querySelector('.toast'); if(!t)return; 
 function updateSel(sc){ if(!sc)return 0; var n=sc.querySelectorAll('.photo.checked').length; var c=sc.querySelector('.selcount'); if(c)c.textContent=n; return n; }
 function exitSel(sc){ if(!sc)return; sc.classList.remove('selmode'); sc.querySelectorAll('.photo.checked').forEach(p=>p.classList.remove('checked')); updateSel(sc); }
 function setLang(device,L){ device.querySelectorAll('.lng').forEach(e=>e.textContent=L); }
-function openDownload(device,count){ var md=device.querySelector('#m-download'); md.dataset.cnt=count; var dn=md.querySelector('.dlnum'); if(dn)dn.textContent=count>1?('共 '+count+' 张'):''; md.classList.add('show'); }
+function setRemembered(device){ device.querySelectorAll('.remembered').forEach(function(r){ r.style.display=''; }); }
+var VARS=['v1','v2','v3','v4','v5'];
+function openViewer(device, ph){ var mv=device.querySelector('#m-viewer'); if(!mv)return; var vp=mv.querySelector('.vphoto'); var i=0; for(var k=0;k<VARS.length;k++){ if(ph.classList.contains(VARS[k])){i=k;break;} } vp.dataset.vi=i; vp.className='vphoto photo '+VARS[i]; mv.classList.add('show'); }
+function openDownload(device,count){ var md=device.querySelector('#m-download'); md.dataset.cnt=count; var dn=md.querySelector('.dlnum'); if(dn)dn.textContent=count>1?('共 '+count+' 张'):''; var ag=md.querySelector('#dl-appguide'); if(ag)ag.style.display=count>1?'flex':'none'; md.classList.add('show'); }
+/* 日历 + 赛事列表筛选 */
+var EVT=new Set(['2026-08-15','2026-08-16','2026-08-17','2026-03-20','2026-03-21','2025-11-10']);
+function pad(n){return (n<10?'0':'')+n;}
+function iso(y,m,d){return y+'-'+pad(m)+'-'+pad(d);}
+function fmt(s){var p=s.split('-');return (+p[1])+'/'+(+p[2]);}
+function calRender(w){
+  var y=+w.dataset.y, m=+w.dataset.m;
+  w.querySelector('.caltitle').textContent=y+'年'+m+'月';
+  var startDow=new Date(y,m-1,1).getDay(), days=new Date(y,m,0).getDate();
+  var s=w.dataset.start||'', en=w.dataset.end||'', html='';
+  for(var i=0;i<startDow;i++) html+='<div class="calcell empty"></div>';
+  for(var d=1; d<=days; d++){ var cur=iso(y,m,d); var cls='calcell has';
+    if(s&&cur===s)cls+=' start'; if(en&&cur===en)cls+=' end'; if(s&&en&&cur>s&&cur<en)cls+=' inrange';
+    html+='<div class="'+cls+'" data-iso="'+cur+'"><span>'+d+'</span>'+(EVT.has(cur)?'<span class="dot"></span>':'')+'</div>'; }
+  w.querySelector('.calgrid').innerHTML=html;
+}
+function applyFilters(device){
+  var sb=device.querySelector('.searchbar'); if(!sb)return;
+  var inp=sb.querySelector('input'); var q=(inp?inp.value:'').trim().toLowerCase();
+  var ds=sb.dataset.ds||'', de=sb.dataset.de||'';
+  device.querySelectorAll('.evrow').forEach(function(r){
+    var nmEl=r.querySelector('.info b'); var nm=nmEl?nmEl.textContent.toLowerCase():''; var dt=r.dataset.date||''; var ok=true;
+    if(q && nm.indexOf(q)<0) ok=false;
+    if(ds){ var hi=de||ds; if(!(dt>=ds && dt<=hi)) ok=false; }
+    r.style.display=ok?'':'none';
+  });
+}
 
 document.addEventListener('click',function(e){
   var device=e.target.closest('.device'); if(!device) return;
@@ -582,13 +980,18 @@ document.addEventListener('click',function(e){
       var sn=sf.querySelector('.srcname'); if(sn)sn.textContent=(a==='pick-camera'?'实时自拍':'相册照片'); return; }
     if(a==='reselect'){ var sf2=device.querySelector('#p-selfie'); sf2.classList.remove('picked'); return; }
     if(a==='match'){ closeModals(device); var lo=device.querySelector('#m-loading'); lo.classList.add('show');
-      setTimeout(function(){ lo.classList.remove('show'); go(device,'p-results'); },1300); return; }
+      setTimeout(function(){ lo.classList.remove('show'); go(device,'p-results'); setRemembered(device); },1300); return; }
     if(a==='matchempty'){ closeModals(device); var lo2=device.querySelector('#m-loading'); lo2.classList.add('show');
       setTimeout(function(){ lo2.classList.remove('show'); go(device,'p-empty'); },1300); return; }
     if(a==='download'){ var md=device.querySelector('#m-download'); var cnt=parseInt(md.dataset.cnt||'1',10);
       var sel=md.querySelector('.o.sel b'); var ver=sel?sel.textContent:'原图'; closeModals(device);
-      if(cnt>1){ toast(device,'已打包 '+cnt+' 张 · '+ver); var sm=device.querySelector('.screen.selmode'); if(sm)exitSel(sm); } else { toast(device,'已开始下载 · '+ver); } return; }
+      var pfb=md.querySelector('.pfseg b.on'); var pfk=pfb?pfb.dataset.pf:'ios';
+      if(cnt>1){ toast(device,'正在逐张保存 '+cnt+' 张到相册 · '+ver); var sm=device.querySelector('.screen.selmode'); if(sm)exitSel(sm); }
+      else if(pfk==='ios'){ toast(device,'已唤起系统分享，请选「存储图像」· '+ver); }
+      else { toast(device,'正在保存到相册 · '+ver); } return; }
     if(a==='batchall'){ openDownload(device,24); return; }
+    if(a==='view-save'){ var md=device.querySelector('#m-download'); var mvw=device.querySelector('#m-viewer'); if(mvw)mvw.classList.remove('show'); if(md){ openDownload(device,1); } else { toast(device,'已下载原图到电脑'); } return; }
+    if(a==='wmatch'){ closeModals(device); var wlo=device.querySelector('#m-wloading'); if(wlo)wlo.classList.add('show'); setTimeout(function(){ if(wlo)wlo.classList.remove('show'); go(device,'w-results'); setRemembered(device); },1300); return; }
     if(a==='selmode'){ var sc=act.closest('.screen'); sc.classList.add('selmode'); updateSel(sc); return; }
     if(a==='selcancel'){ exitSel(act.closest('.screen')); return; }
     if(a==='batchsel'){ var sc2=act.closest('.screen'); var n=sc2.querySelectorAll('.photo.checked').length;
@@ -596,14 +999,36 @@ document.addEventListener('click',function(e){
     if(a.indexOf('lang:')===0){ var L=a.slice(5); closeModals(device); setLang(device,L);
       device.querySelectorAll('#m-lang .li').forEach(li=>li.classList.toggle('sel', li.dataset.action===a));
       toast(device,'已切换语言：'+L); return; }
+    if(a==='diredit-save'){ closeModals(device); toast(device,'目录已保存'); return; }
+    if(a==='dirdel-confirm'){ closeModals(device); toast(device,'目录及其素材已删除'); return; }
+    if(a==='photodel-confirm'){ closeModals(device); var sm=device.querySelector('.screen.selmode'); if(sm)exitSel(sm); toast(device,'已删除所选照片'); return; }
+    if(a==='picker-confirm'){ var tgt=device.querySelector('#m-dir-picker .pt.on'); var nm=tgt?tgt.textContent.trim():'目标目录'; closeModals(device); var sm2=device.querySelector('.screen.selmode'); if(sm2)exitSel(sm2); toast(device,'已移动到「'+nm+'」'); return; }
   }
 
   // multiselect: tap photo toggles check instead of opening download
   var ph=e.target.closest('.photo');
-  if(ph){ var scr=ph.closest('.screen'); if(scr && scr.classList.contains('selmode')){ ph.classList.toggle('checked'); updateSel(scr); return; } }
+  if(ph){ var scr=ph.closest('.screen');
+    if(scr && scr.classList.contains('selmode')){ ph.classList.toggle('checked'); updateSel(scr); return; }
+    if(scr && (scr.id==='p-results'||scr.id==='p-browse-grid'||scr.id==='w-results'||scr.id==='w-browse-grid')){ openViewer(device, ph); return; } }
+  var vv=e.target.closest('[data-view]');
+  if(vv){ var mv=device.querySelector('#m-viewer'); var vp=mv.querySelector('.vphoto'); var i=+(vp.dataset.vi||0); i=(vv.dataset.view==='next')?((i+1)%VARS.length):((i+VARS.length-1)%VARS.length); vp.dataset.vi=i; vp.className='vphoto photo '+VARS[i]; return; }
+
+    if(a==='cal-apply'){ var cw=act.closest('.modal').querySelector('.calwrap'); var s=cw.dataset.start||'', en=cw.dataset.end||''; closeModals(device);
+      var sb=device.querySelector('.searchbar'); if(sb){ sb.dataset.ds=s; sb.dataset.de=en; var chip=device.querySelector('.filterchip');
+        if(chip){ if(s){ chip.querySelector('.ftext').textContent=fmt(s)+((en&&en!==s)?(' – '+fmt(en)):''); chip.style.display='inline-flex'; } else chip.style.display='none'; }
+        applyFilters(device); } if(s)toast(device,'已按日期筛选赛事'); return; }
+    if(a==='cal-clear'){ var cw2=act.closest('.modal').querySelector('.calwrap'); cw2.dataset.start=''; cw2.dataset.end=''; calRender(cw2); return; }
+    if(a==='filter-clear'){ var sb2=device.querySelector('.searchbar'); if(sb2){ sb2.dataset.ds=''; sb2.dataset.de=''; } var chip2=device.querySelector('.filterchip'); if(chip2)chip2.style.display='none'; applyFilters(device); return; }
+
+  var cn=e.target.closest('[data-cal]');
+  if(cn){ var cw3=cn.closest('.calwrap'); var y=+cw3.dataset.y, m=+cw3.dataset.m; if(cn.dataset.cal==='prev'){ m--; if(m<1){m=12;y--;} } else { m++; if(m>12){m=1;y++;} } cw3.dataset.y=y; cw3.dataset.m=m; calRender(cw3); return; }
+  var cc=e.target.closest('.calcell.has');
+  if(cc){ var cw4=cc.closest('.calwrap'); var cur=cc.dataset.iso; var cs=cw4.dataset.start||'', ce=cw4.dataset.end||'';
+    if(!cs || (cs&&ce)){ cw4.dataset.start=cur; cw4.dataset.end=''; } else { if(cur>=cs) cw4.dataset.end=cur; else cw4.dataset.start=cur; }
+    calRender(cw4); return; }
 
   var op=e.target.closest('[data-open]');
-  if(op){ if(op.dataset.open==='m-download'){ openDownload(device,1); return; } var m=device.querySelector('#'+op.dataset.open); if(m)m.classList.add('show'); return; }
+  if(op){ if(op.dataset.open==='m-download'){ openDownload(device,1); return; } var m=device.querySelector('#'+op.dataset.open); if(m){ if(op.dataset.open==='m-calendar'){ var cw5=m.querySelector('.calwrap'); if(cw5)calRender(cw5); } m.classList.add('show'); } return; }
   var cl=e.target.closest('[data-close]');
   if(cl){ var mm=cl.closest('.modal'); if(mm)mm.classList.remove('show'); return; }
   var g=e.target.closest('[data-go]');
@@ -612,9 +1037,21 @@ document.addEventListener('click',function(e){
   if(tt){ toast(device,tt.dataset.toast); return; }
   var pk=e.target.closest('[data-pick]');
   if(pk){ pk.parentElement.querySelectorAll('[data-pick]').forEach(x=>x.classList.remove('sel')); pk.classList.add('sel'); return; }
+  var pf=e.target.closest('[data-pf]');
+  if(pf){ pf.parentElement.querySelectorAll('[data-pf]').forEach(x=>x.classList.remove('on')); pf.classList.add('on');
+    var note=device.querySelector('#pfnote');
+    if(note) note.innerHTML = pf.dataset.pf==='ios'
+      ? '在 iPhone 上：点「保存」唤起系统分享 → 选「存储图像」即可存入相册；也可直接<b>长按图片</b>选「添加到照片」。'
+      : '在 Android 上：点「保存」<b>直接下载原图</b>到相册 / 下载目录，无需额外操作。';
+    return; }
+  var lt=e.target.closest('[data-langtab]');
+  if(lt){ lt.parentElement.querySelectorAll('[data-langtab]').forEach(x=>x.classList.remove('on')); lt.classList.add('on'); var inp=device.querySelector('#dir-name-input'); if(inp)inp.value=lt.dataset.val||''; return; }
+  var ptn=e.target.closest('.picktree .pt');
+  if(ptn){ ptn.closest('.picktree').querySelectorAll('.pt').forEach(x=>x.classList.remove('on')); ptn.classList.add('on'); return; }
   var tn=e.target.closest('.tnode');
   if(tn){ tn.closest('.tree').querySelectorAll('.tnode').forEach(n=>n.classList.remove('on')); tn.classList.add('on'); }
 });
+document.addEventListener('input',function(e){ var sb=e.target.closest('.searchbar'); if(sb){ var dev=e.target.closest('.device'); if(dev)applyFilters(dev); } });
 </script>
 </body>
 </html>
