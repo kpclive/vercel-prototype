@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPCLIVE 排行榜 原型 v1.0</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body {
+    font-family:"PingFang SC","Microsoft YaHei",-apple-system,sans-serif;
+    background:#eef2f7; color:#1e293b; padding:24px; min-height:100vh;
+  }
+  .page-head { max-width:1320px; margin:0 auto 20px; }
+  .page-head h1 { font-size:20px; color:#0f172a; font-weight:600; }
+  .page-head p { font-size:13px; color:#64748b; margin-top:6px; }
+  .page-head .tag { display:inline-block; background:#e2e8f0; color:#475569; font-size:11px; padding:2px 8px; border-radius:6px; margin-right:6px; }
+
+  /* navigator */
+  .nav { max-width:1320px; margin:0 auto 18px; display:flex; gap:8px; flex-wrap:wrap; }
+  .nav button {
+    background:#fff; color:#475569; border:1px solid #e2e8f0; padding:8px 16px;
+    border-radius:8px; font-size:13px; cursor:pointer; transition:.15s; font-family:inherit;
+  }
+  .nav button.active { background:#3b82f6; color:#fff; border-color:#3b82f6; }
+  .nav button:hover { color:#0f172a; }
+  .nav button.active:hover { color:#fff; }
+
+  /* phone gallery */
+  .gallery { max-width:1320px; margin:0 auto; display:flex; gap:28px; flex-wrap:wrap; justify-content:center; }
+  .phone {
+    width:390px; height:800px; background:#ffffff; border-radius:38px; position:relative;
+    box-shadow:0 0 0 11px #d8dee9, 0 24px 60px rgba(15,23,42,.18); overflow:hidden; display:none; flex-direction:column;
+  }
+  .phone.show { display:flex; }
+  .phone .notch { position:absolute; top:0; left:50%; transform:translateX(-50%); width:150px; height:26px; background:#d8dee9; border-radius:0 0 18px 18px; z-index:30; }
+  .statusbar { height:42px; flex:0 0 42px; display:flex; align-items:center; justify-content:space-between; padding:0 22px; font-size:12px; color:#1e293b; font-weight:600; }
+  .scr-title { font-size:11px; color:#94a3b8; text-align:center; margin-bottom:8px; letter-spacing:1px; }
+
+  /* app header */
+  .appbar { flex:0 0 auto; padding:4px 18px 12px; }
+  .appbar .row { display:flex; align-items:center; justify-content:space-between; }
+  .appbar h2 { font-size:19px; color:#0f172a; font-weight:700; }
+  .appbar .rules-link { font-size:12px; color:#b45309; cursor:pointer; }
+  .season {
+    margin-top:10px; background:linear-gradient(135deg,#eff6ff,#dbeafe); border:1px solid #bfdbfe;
+    border-radius:12px; padding:11px 14px; display:flex; align-items:center; justify-content:space-between;
+  }
+  .season .s-name { font-size:13px; color:#1e40af; font-weight:600; }
+  .season .s-name b { color:#b45309; }
+
+  .scroll { flex:1 1 auto; overflow-y:auto; padding:0 0 24px; background:#ffffff; }
+  .scroll::-webkit-scrollbar { width:0; }
+
+  /* progress banner (accent card) */
+  .progress {
+    margin:14px 16px; background:linear-gradient(135deg,#2563eb,#1d4ed8); border-radius:14px; padding:14px;
+  }
+  .progress .p-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:9px; }
+  .progress .p-top .me { font-size:13px; color:#bfdbfe; }
+  .progress .p-top .me b { color:#fff; font-size:15px; }
+  .progress .p-top .rk { font-size:12px; color:#fff; background:rgba(255,255,255,.2); padding:3px 9px; border-radius:20px; }
+  .bar { height:8px; background:rgba(255,255,255,.25); border-radius:5px; overflow:hidden; }
+  .bar > i { display:block; height:100%; background:linear-gradient(90deg,#bfdbfe,#fbbf24); border-radius:5px; }
+  .progress .p-foot { margin-top:9px; font-size:12px; color:#dbeafe; }
+  .progress .p-foot b { color:#fde68a; }
+
+  /* leaderboard list */
+  .cutoff { display:flex; align-items:center; gap:8px; margin:6px 16px 4px; color:#059669; font-size:11px; font-weight:600; }
+  .cutoff::before,.cutoff::after { content:""; flex:1; height:1px; background:repeating-linear-gradient(90deg,#34d399 0 6px,transparent 6px 12px); }
+
+  .row-item { display:flex; align-items:center; padding:11px 16px; gap:12px; border-bottom:1px solid #f1f5f9; cursor:pointer; }
+  .row-item:active { background:#f8fafc; }
+  .rank { width:30px; text-align:center; font-size:16px; font-weight:700; color:#94a3b8; flex:0 0 30px; }
+  .rank.g { color:#d97706; } .rank.s { color:#64748b; } .rank.b { color:#b45309; }
+  .ava { width:44px; height:44px; border-radius:50%; flex:0 0 44px; background:#f1f5f9; border:1px solid #e2e8f0; object-fit:cover; display:flex; align-items:center; justify-content:center; font-size:18px; }
+  .pinfo { flex:1 1 auto; min-width:0; }
+  .pinfo .pn { font-size:14px; color:#0f172a; font-weight:600; display:flex; align-items:center; gap:6px; }
+  .flag { font-size:13px; }
+  .pinfo .pm { font-size:11px; color:#94a3b8; margin-top:3px; }
+  .pinfo .pm .ko { color:#dc2626; }
+  .pts { text-align:right; flex:0 0 auto; }
+  .pts .v { font-size:17px; font-weight:700; color:#0f172a; white-space:nowrap; }
+  .pts .u { font-size:10px; color:#94a3b8; }
+  .trend { font-size:11px; margin-left:4px; }
+  .up { color:#059669; } .down { color:#dc2626; } .flat { color:#94a3b8; }
+
+  /* merged-board extras */
+  .merge-tip { margin-top:9px; font-size:10.5px; color:#64748b; line-height:1.5; background:#f8fafc; border:1px solid #e2e8f0; border-radius:9px; padding:7px 10px; }
+  .pinfo .pm .pop { color:#db2777; }
+  .heart { flex:0 0 auto; width:34px; height:34px; border-radius:50%; background:#fff; border:1px solid #f9a8d4; color:#db2777; font-size:17px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-family:inherit; }
+  .heart.done { background:#fce7f3; border-color:#db2777; color:#db2777; }
+  .heart:active { transform:scale(.9); }
+  .heart:disabled { opacity:.45; cursor:default; }
+
+  /* player profile */
+  .pf-hero { padding:18px 16px; background:linear-gradient(135deg,#f8fafc,#eff6ff); border-bottom:1px solid #e2e8f0; }
+  .pf-hero .top { display:flex; gap:14px; align-items:center; }
+  .pf-hero .big-ava { width:68px; height:68px; border-radius:50%; background:#e2e8f0; border:1px solid #cbd5e1; display:flex; align-items:center; justify-content:center; font-size:30px; flex:0 0 68px; }
+  .pf-hero h3 { font-size:19px; color:#0f172a; font-weight:700; display:flex; align-items:center; gap:7px; }
+  .pf-hero .loc { font-size:12px; color:#64748b; margin-top:4px; }
+  .pf-hero .bio { font-size:12px; color:#475569; margin-top:12px; line-height:1.6; }
+  .stats { display:flex; margin:14px 16px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; overflow:hidden; }
+  .stats .st { flex:1; text-align:center; padding:13px 4px; border-right:1px solid #e2e8f0; }
+  .stats .st:last-child { border:none; }
+  .stats .st .sv { font-size:19px; font-weight:700; color:#b45309; }
+  .stats .st .sl { font-size:10px; color:#94a3b8; margin-top:4px; }
+  .sec-title { font-size:14px; color:#0f172a; font-weight:600; margin:18px 16px 10px; display:flex; justify-content:space-between; }
+  .sec-title span { font-size:11px; color:#94a3b8; font-weight:400; }
+  .videos { display:flex; gap:11px; padding:0 16px; overflow-x:auto; }
+  .videos::-webkit-scrollbar { height:0; }
+  .vcard { flex:0 0 168px; }
+  .vthumb { width:168px; height:96px; border-radius:9px; background:linear-gradient(135deg,#93c5fd,#3b82f6); position:relative; display:flex; align-items:center; justify-content:center; }
+  .vthumb .play { width:34px; height:34px; border-radius:50%; background:rgba(0,0,0,.4); display:flex; align-items:center; justify-content:center; color:#fff; font-size:13px; }
+  .vthumb .dur { position:absolute; bottom:6px; right:6px; background:rgba(0,0,0,.65); color:#fff; font-size:10px; padding:1px 5px; border-radius:4px; }
+  .vthumb .live { position:absolute; top:6px; left:6px; background:#ef4444; color:#fff; font-size:9px; font-weight:700; padding:2px 6px; border-radius:4px; }
+  .vcard .vt { font-size:12px; color:#475569; margin-top:7px; line-height:1.4; }
+  .pf-cta { padding:16px; display:flex; gap:12px; }
+  .pf-cta button { flex:1; padding:13px; border-radius:11px; font-size:14px; font-weight:600; border:none; cursor:pointer; font-family:inherit; }
+  .pf-cta .vote { background:#3b82f6; color:#fff; }
+  .pf-cta .vote.done { background:#e2e8f0; color:#94a3b8; }
+  .pf-cta .follow { background:#fff; color:#475569; border:1px solid #cbd5e1; }
+
+  /* rules */
+  .rules-wrap { padding:8px 16px 24px; }
+  .rule-card { background:#f8fafc; border:1px solid #e2e8f0; border-radius:13px; padding:15px; margin-bottom:14px; }
+  .rule-card h4 { font-size:14px; color:#0f172a; font-weight:600; margin-bottom:11px; display:flex; align-items:center; gap:7px; }
+  .rule-card h4 .ic { width:22px; height:22px; border-radius:6px; background:#dbeafe; color:#1e40af; display:flex; align-items:center; justify-content:center; font-size:12px; }
+  .ptable { width:100%; border-collapse:collapse; }
+  .ptable td { padding:8px 4px; font-size:13px; border-bottom:1px solid #e2e8f0; color:#334155; }
+  .ptable tr:last-child td { border:none; }
+  .ptable td:last-child { text-align:right; font-weight:700; color:#b45309; }
+  .rule-card p { font-size:12.5px; color:#64748b; line-height:1.7; }
+  .rule-card p b { color:#1e293b; }
+  .rule-card .ko-hi { color:#dc2626; font-weight:600; }
+  .note { font-size:11px; color:#94a3b8; margin-top:9px; padding-top:9px; border-top:1px dashed #e2e8f0; line-height:1.6; }
+
+  /* toast */
+  .toast { position:fixed; bottom:40px; left:50%; transform:translateX(-50%) translateY(20px); background:#0f172a; color:#fff; padding:11px 20px; border-radius:10px; font-size:13px; opacity:0; transition:.25s; z-index:99; box-shadow:0 8px 24px rgba(15,23,42,.25); }
+  .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+  .legend { max-width:1320px; margin:22px auto 0; font-size:12px; color:#64748b; line-height:1.8; }
+  .legend b { color:#334155; }
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <h1>KPCLIVE 排行榜 · 原型 v1.0</h1>
+  <p>
+    <span class="tag">C 端 APP</span><span class="tag">低保真</span>
+    服务小赛事选手 · 单一积分榜：总分 = 名次分 + 淘汰分 + 人气分（投票计入晋级，赛季封顶）· 全球单一总榜
+  </p>
+</div>
+
+<div class="nav">
+  <button class="active" onclick="showScreen('s-points',this)">① 积分榜（含投票）</button>
+  <button onclick="showScreen('s-profile',this)">② 选手主页</button>
+  <button onclick="showScreen('s-rules',this)">③ 积分规则页</button>
+</div>
+
+<div class="gallery">
+
+  <!-- ① 积分榜（含投票） -->
+  <div class="phone show" id="s-points">
+    <div class="notch"></div>
+    <div class="statusbar"><span>9:41</span><span>KPC LIVE</span></div>
+    <div class="appbar">
+      <div class="row">
+        <h2>排行榜</h2>
+        <span class="rules-link" onclick="showScreen('s-rules',null,2)">积分规则 ›</span>
+      </div>
+      <div class="season">
+        <div class="s-name">🏆 <b>2026 赛季</b> · 通往主赛事</div>
+      </div>
+      <div class="merge-tip">总分 = 名次分 + 淘汰分 + 人气分　·　❤️ 每人每日 1 票，人气分赛季封顶 +50</div>
+    </div>
+    <div class="scroll">
+      <div class="row-item">
+        <div class="rank g">1</div>
+        <div class="ava" onclick="showScreen('s-profile',null,1)">🇺🇸</div>
+        <div class="pinfo" onclick="showScreen('s-profile',null,1)"><div class="pn">Daniel Chen <span class="flag">🇺🇸</span></div>
+          <div class="pm">名次420 · <span class="ko">淘汰+280</span> · <span class="pop">人气+41</span></div></div>
+        <div class="pts"><div class="v">741<span class="trend up">▲2</span></div><div class="u">总分</div></div>
+        <button class="heart" onclick="voteOnce(this)" title="投票">♡</button>
+      </div>
+
+      <div class="row-item">
+        <div class="rank s">2</div>
+        <div class="ava" onclick="showScreen('s-profile',null,1)">🇯🇵</div>
+        <div class="pinfo" onclick="showScreen('s-profile',null,1)"><div class="pn">山田 拓海 <span class="flag">🇯🇵</span></div>
+          <div class="pm">名次390 · <span class="ko">淘汰+240</span> · <span class="pop">人气+50 满</span></div></div>
+        <div class="pts"><div class="v">680<span class="trend up">▲1</span></div><div class="u">总分</div></div>
+        <button class="heart" onclick="voteOnce(this)" title="投票">♡</button>
+      </div>
+
+      <div class="row-item">
+        <div class="rank b">3</div>
+        <div class="ava" onclick="showScreen('s-profile',null,1)">🇷🇺</div>
+        <div class="pinfo" onclick="showScreen('s-profile',null,1)"><div class="pn">Иван Петров <span class="flag">🇷🇺</span></div>
+          <div class="pm">名次360 · <span class="ko">淘汰+210</span> · <span class="pop">人气+30</span></div></div>
+        <div class="pts"><div class="v">600<span class="trend down">▼1</span></div><div class="u">总分</div></div>
+        <button class="heart" onclick="voteOnce(this)" title="投票">♡</button>
+      </div>
+
+      <div class="row-item">
+        <div class="rank">4</div>
+        <div class="ava" onclick="showScreen('s-profile',null,1)">🇰🇷</div>
+        <div class="pinfo" onclick="showScreen('s-profile',null,1)"><div class="pn">김민준 <span class="flag">🇰🇷</span></div>
+          <div class="pm">名次340 · <span class="ko">淘汰+180</span> · <span class="pop">人气+34</span></div></div>
+        <div class="pts"><div class="v">554<span class="trend up">▲3</span></div><div class="u">总分</div></div>
+        <button class="heart" onclick="voteOnce(this)" title="投票">♡</button>
+      </div>
+
+      <div class="row-item">
+        <div class="rank">15</div>
+        <div class="ava" onclick="showScreen('s-profile',null,1)">🇧🇷</div>
+        <div class="pinfo" onclick="showScreen('s-profile',null,1)"><div class="pn">Lucas Silva <span class="flag">🇧🇷</span></div>
+          <div class="pm">名次210 · <span class="ko">淘汰+90</span> · <span class="pop">人气+43</span></div></div>
+        <div class="pts"><div class="v">343<span class="trend up">▲2</span></div><div class="u">总分</div></div>
+        <button class="heart" onclick="voteOnce(this)" title="投票">♡</button>
+      </div>
+
+      <div class="row-item">
+        <div class="rank">16</div>
+        <div class="ava" onclick="showScreen('s-profile',null,1)">🇫🇷</div>
+        <div class="pinfo" onclick="showScreen('s-profile',null,1)"><div class="pn">Hugo Martin <span class="flag">🇫🇷</span></div>
+          <div class="pm">名次200 · <span class="ko">淘汰+80</span> · <span class="pop">人气+23</span></div></div>
+        <div class="pts"><div class="v">303<span class="trend down">▼1</span></div><div class="u">总分</div></div>
+        <button class="heart" onclick="voteOnce(this)" title="投票">♡</button>
+      </div>
+
+      <div class="cutoff">晋级线 TOP 16 · 以上选手获主赛事邀请</div>
+
+      <div class="row-item">
+        <div class="rank">17</div>
+        <div class="ava" onclick="showScreen('s-profile',null,1)">🇨🇳</div>
+        <div class="pinfo" onclick="showScreen('s-profile',null,1)"><div class="pn">王浩 <span class="flag">🇨🇳</span></div>
+          <div class="pm">名次170 · <span class="ko">淘汰+70</span> · <span class="pop">人气+8</span></div></div>
+        <div class="pts"><div class="v">248<span class="trend up">▲4</span></div><div class="u">总分</div></div>
+        <button class="heart" onclick="voteOnce(this)" title="投票">♡</button>
+      </div>
+
+      <div class="row-item">
+        <div class="rank">18</div>
+        <div class="ava" onclick="showScreen('s-profile',null,1)">🇩🇪</div>
+        <div class="pinfo" onclick="showScreen('s-profile',null,1)"><div class="pn">Felix Weber <span class="flag">🇩🇪</span></div>
+          <div class="pm">名次165 · <span class="ko">淘汰+60</span> · <span class="pop">人气+6</span></div></div>
+        <div class="pts"><div class="v">231<span class="trend flat">—</span></div><div class="u">总分</div></div>
+        <button class="heart" onclick="voteOnce(this)" title="投票">♡</button>
+      </div>
+
+      <div style="padding:14px 16px; font-size:11px; color:#475569; text-align:center; line-height:1.6;">
+        🛡 投票需登录，每人每日 1 票，经天御风控防刷；人气分赛季封顶 +50，确保成绩主导晋级
+      </div>
+    </div>
+  </div>
+
+  <!-- ② 选手主页 -->
+  <div class="phone" id="s-profile">
+    <div class="notch"></div>
+    <div class="statusbar"><span>9:41</span><span style="cursor:pointer" onclick="showScreen('s-points',null,0)">‹ 返回</span></div>
+    <div class="scroll">
+      <div class="pf-hero">
+        <div class="top">
+          <div class="big-ava">🇺🇸</div>
+          <div>
+            <h3>Daniel Chen <span class="flag">🇺🇸</span></h3>
+            <div class="loc">美国 · 洛杉矶 · 2026 赛季</div>
+          </div>
+        </div>
+        <div class="bio">职业牌手，激进打法代表。本赛季小赛事淘汰人头数全球第一，主打深筹积累。"All in is a lifestyle."</div>
+      </div>
+
+      <div class="stats">
+        <div class="st"><div class="sv">第 1</div><div class="sl">榜单名次</div></div>
+        <div class="st"><div class="sv">741</div><div class="sl">赛季总分</div></div>
+        <div class="st"><div class="sv">28</div><div class="sl">累计淘汰</div></div>
+        <div class="st"><div class="sv">+41</div><div class="sl">人气分</div></div>
+      </div>
+
+      <div class="progress" style="margin:0 16px 4px;">
+        <div class="p-top">
+          <div class="me">晋级状态</div>
+          <div class="rk" style="background:rgba(52,211,153,.2); color:#34d399">✓ 已锁定晋级</div>
+        </div>
+        <div class="bar"><i style="width:100%; background:#34d399"></i></div>
+        <div class="p-foot" style="color:#86efac">稳居 TOP 16，已获 2026 主赛事邀请资格</div>
+      </div>
+
+      <div class="sec-title">比赛视频 <span>看全部 ›</span></div>
+      <div class="videos">
+        <div class="vcard">
+          <div class="vthumb"><span class="live">● LIVE</span><div class="play">▶</div><span class="dur">直播中</span></div>
+          <div class="vt">DAY2 主桌直播 · 深筹对决</div>
+        </div>
+        <div class="vcard">
+          <div class="vthumb"><div class="play">▶</div><span class="dur">12:30</span></div>
+          <div class="vt">三连淘汰高光集锦</div>
+        </div>
+        <div class="vcard">
+          <div class="vthumb"><div class="play">▶</div><span class="dur">08:15</span></div>
+          <div class="vt">AA vs KK 史诗 all-in</div>
+        </div>
+      </div>
+
+      <div class="sec-title">赛季战绩 <span>近 5 场</span></div>
+      <div style="padding:0 16px;">
+        <div class="row-item" style="padding-left:0; padding-right:0;">
+          <div class="rank g">冠</div>
+          <div class="pinfo"><div class="pn">东京站 · 4月</div><div class="pm">名次分 100 + 淘汰 ×6 +60</div></div>
+          <div class="pts"><div class="v">160</div></div>
+        </div>
+        <div class="row-item" style="padding-left:0; padding-right:0;">
+          <div class="rank">4</div>
+          <div class="pinfo"><div class="pn">新加坡站 · 3月</div><div class="pm">名次分 30 + 淘汰 ×5 +50</div></div>
+          <div class="pts"><div class="v">80</div></div>
+        </div>
+        <div class="row-item" style="padding-left:0; padding-right:0; border:none;">
+          <div class="rank s">亚</div>
+          <div class="pinfo"><div class="pn">伦敦站 · 2月</div><div class="pm">名次分 70 + 淘汰 ×4 +40</div></div>
+          <div class="pts"><div class="v">110</div></div>
+        </div>
+      </div>
+
+      <div class="pf-cta">
+        <button class="vote" onclick="vote(this)">❤️ 投人气票</button>
+        <button class="follow">+ 关注</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ③ 积分规则页 -->
+  <div class="phone" id="s-rules">
+    <div class="notch"></div>
+    <div class="statusbar"><span>9:41</span><span style="cursor:pointer" onclick="showScreen('s-points',null,0)">‹ 返回</span></div>
+    <div class="appbar"><div class="row"><h2>积分规则</h2></div></div>
+    <div class="scroll">
+      <div class="rules-wrap">
+
+        <div class="rule-card">
+          <h4><span class="ic">①</span>名次分（主）</h4>
+          <table class="ptable">
+            <tr><td>冠军</td><td>100 分</td></tr>
+            <tr><td>亚军</td><td>70 分</td></tr>
+            <tr><td>季军</td><td>50 分</td></tr>
+            <tr><td>4 – 8 名</td><td>30 分</td></tr>
+            <tr><td>9 – 16 名</td><td>15 分</td></tr>
+            <tr><td>完赛（未进前16）</td><td>5 分</td></tr>
+          </table>
+        </div>
+
+        <div class="rule-card">
+          <h4><span class="ic">②</span>淘汰分（附加）</h4>
+          <p>每<b>淘汰 1 名对手真实出局</b>，<span class="ko-hi">+10 分</span>，全场累加。淘汰分与最终名次无关——即使你早早出局，已淘汰的人头照样计入。</p>
+          <div class="note">⚠️ 仅当对手被真实淘汰出局时计分；单纯发起 all-in 但无人出局<b>不计分</b>，以防合谋刷分。淘汰数据由赛事系统精确提供。</div>
+        </div>
+
+        <div class="rule-card">
+          <h4><span class="ic">③</span>人气分（投票）</h4>
+          <p>观众投票折算为人气分，计入总分、<b>影响最终排名与晋级</b>。<b>登录可投、每人每日 1 票</b>，经天御风控防刷。</p>
+          <div class="note">⚠️ 人气分<b>赛季封顶 +50</b>（占位值），刻意限制权重，确保「成绩」始终主导晋级，避免榜单沦为刷票赛。</div>
+        </div>
+
+        <div class="rule-card">
+          <h4><span class="ic">④</span>赛季与晋级</h4>
+          <p><b>赛季总分 = 名次分 + 淘汰分 + 人气分</b>，全赛季累加。<br>赛季对齐主赛事周期，<b>一年一季，赛季初清零</b>。<br>赛季结算时，榜单 <b>TOP 16</b> 自动获得 2026 主赛事邀请资格。</p>
+          <div class="note">📋 规则、实时榜单、晋级名额数全程公开透明。</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="legend">
+  <b>原型说明（v1.0 更新：人气榜已合并进积分榜，投票计入晋级）：</b>① 积分榜每行展示「名次分 + 淘汰分 + 人气分」三段明细与总分，行尾 ❤ 为投票入口（每人每日 1 票，投后全站锁定当天），并保留 TOP 16 晋级线。② 选手主页打通战绩 / 视频 / 直播 / 投票，是排行榜与「看视频/直播」核心业务的衔接点。③ 规则页公开全部算分与晋级逻辑，含人气分赛季封顶 +50。点击榜单选手头像/姓名 → 选手主页；点积分规则 → 规则页。
+</div>
+
+<div class="toast" id="toast">✓ 投票成功，明日还可再投</div>
+
+<script>
+  function showScreen(id, btn, navIdx){
+    document.querySelectorAll('.phone').forEach(p=>p.classList.remove('show'));
+    document.getElementById(id).classList.add('show');
+    document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+    if(btn){ btn.classList.add('active'); }
+    else if(navIdx!==undefined){ document.querySelectorAll('.nav button')[navIdx].classList.add('active'); }
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  let votedToday = false;
+  function toast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'), 1800);
+  }
+  // 每人每日 1 票：投出后锁定当天所有投票入口
+  function voteOnce(el){
+    if(votedToday){ toast('今日票数已用完，明日 0 点重置'); return; }
+    votedToday = true;
+    el.classList.add('done');
+    el.innerHTML = '♥';
+    document.querySelectorAll('.heart').forEach(b=>{ b.disabled = true; });
+    document.querySelectorAll('.vote').forEach(b=>{ b.classList.add('done'); b.disabled = true; b.textContent='❤️ 今日已投'; });
+    toast('✓ 投票成功，人气分 +1（明日还可再投）');
+  }
+  // 选手主页投票入口
+  function vote(el){
+    if(votedToday){ toast('今日票数已用完，明日 0 点重置'); return; }
+    votedToday = true;
+    el.classList.add('done'); el.disabled = true; el.textContent = '❤️ 今日已投';
+    document.querySelectorAll('.heart').forEach(b=>{ b.disabled = true; });
+    toast('✓ 投票成功，人气分 +1（明日还可再投）');
+  }
+</script>
+</body>
+</html>
