@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPCLIVE 选手积分 · 原型</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"PingFang SC","Microsoft YaHei",sans-serif; background:#0f172a; color:#e2e8f0; }
+  /* 顶部端切换 */
+  .topbar { height:52px; background:#111827; border-bottom:1px solid #1f2937; display:flex; align-items:center; padding:0 20px; gap:16px; position:sticky; top:0; z-index:50; }
+  .topbar .logo { font-weight:700; color:#fff; font-size:15px; letter-spacing:.5px; }
+  .topbar .logo span { color:#3b82f6; }
+  .seg { display:flex; background:#1e293b; border-radius:8px; padding:3px; }
+  .seg button { border:0; background:transparent; color:#94a3b8; padding:6px 16px; border-radius:6px; cursor:pointer; font-size:13px; }
+  .seg button.active { background:#3b82f6; color:#fff; }
+  .topbar .hint { margin-left:auto; font-size:12px; color:#64748b; }
+
+  .view { display:none; }
+  .view.active { display:block; }
+
+  /* ============ 运营后台 ============ */
+  .admin-wrap { min-width:1280px; }
+  .crumb { padding:14px 24px; font-size:13px; color:#94a3b8; background:#0f172a; }
+  .crumb b { color:#e2e8f0; }
+  .admin-grid { display:grid; grid-template-columns:480px 1fr; gap:0; min-height:calc(100vh - 118px); }
+  .panel { background:#0f172a; }
+  .form-panel { border-right:1px solid #1f2937; padding:24px; overflow-y:auto; }
+  .chart-panel { padding:24px 32px; }
+  .sec-title { font-size:13px; color:#3b82f6; font-weight:600; margin:18px 0 12px; padding-bottom:6px; border-bottom:1px solid #1f2937; }
+  .sec-title:first-child { margin-top:0; }
+  .field { margin-bottom:14px; }
+  .field label { display:block; font-size:12px; color:#94a3b8; margin-bottom:6px; }
+  .field label .u { color:#475569; }
+  .field input, .field select { width:100%; background:#1e293b; border:1px solid #334155; color:#e2e8f0; border-radius:7px; padding:9px 11px; font-size:13px; }
+  .field input:focus, .field select:focus { outline:none; border-color:#3b82f6; }
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .range-row { display:flex; align-items:center; gap:10px; }
+  .range-row input[type=range] { flex:1; accent-color:#3b82f6; }
+  .range-row .val { width:60px; text-align:right; font-size:13px; color:#e2e8f0; font-variant-numeric:tabular-nums; }
+  .save-bar { margin-top:22px; display:flex; gap:12px; }
+  .btn { border:0; border-radius:8px; padding:11px 20px; font-size:13px; cursor:pointer; }
+  .btn-primary { background:#3b82f6; color:#fff; }
+  .btn-ghost { background:#1e293b; color:#94a3b8; }
+
+  /* 右侧图表区 */
+  .score-cards { display:flex; gap:16px; margin-bottom:24px; }
+  .score-card { background:#1e293b; border:1px solid #334155; border-radius:12px; padding:16px 20px; flex:1; }
+  .score-card .k { font-size:12px; color:#94a3b8; }
+  .score-card .v { font-size:26px; font-weight:700; margin-top:6px; font-variant-numeric:tabular-nums; }
+  .v.pos { color:#22c55e; } .v.neg { color:#ef4444; }
+  .badge { display:inline-block; font-size:12px; padding:3px 10px; border-radius:20px; margin-top:8px; }
+  .badge.ok { background:rgba(34,197,94,.15); color:#22c55e; }
+  .badge.no { background:rgba(239,68,68,.15); color:#ef4444; }
+  .radar-box { background:#1e293b; border:1px solid #334155; border-radius:14px; padding:24px; display:flex; gap:28px; align-items:center; }
+  .radar-legend { flex:1; }
+  .legend-item { display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px solid #283548; font-size:13px; }
+  .legend-item:last-child { border-bottom:0; }
+  .legend-item .name { color:#cbd5e1; }
+  .legend-item .name small { color:#64748b; display:block; font-size:11px; }
+  .legend-item .raw { color:#e2e8f0; font-variant-numeric:tabular-nums; }
+  .legend-item .norm { color:#3b82f6; font-size:11px; margin-left:8px; }
+
+  /* ============ 用户端 ============ */
+  .user-wrap { padding:24px; display:flex; flex-direction:column; align-items:center; }
+  .device-seg { margin-bottom:22px; }
+  .device { background:#1e293b; border-radius:22px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,.5); }
+  .device.phone { width:390px; border:8px solid #000; border-radius:38px; }
+  .device.pc { width:980px; border:1px solid #334155; border-radius:14px; }
+  .scr { background:#0b1220; height:760px; overflow-y:auto; }
+  .device.pc .scr { height:620px; }
+  /* app/h5 头部 */
+  .app-head { background:linear-gradient(135deg,#1e3a8a,#3b82f6); padding:18px 16px 16px; color:#fff; }
+  .app-head .t { font-size:18px; font-weight:700; }
+  .app-head .season { display:flex; justify-content:space-between; align-items:center; margin-top:12px; font-size:12px; opacity:.9; }
+  .app-head .countdown { background:rgba(255,255,255,.18); padding:3px 10px; border-radius:20px; }
+  .tabbar { display:flex; background:#0b1220; border-bottom:1px solid #1f2937; }
+  .tabbar div { flex:1; text-align:center; padding:12px 0; font-size:13px; color:#94a3b8; cursor:pointer; }
+  .tabbar div.on { color:#3b82f6; border-bottom:2px solid #3b82f6; font-weight:600; }
+  /* 榜单 */
+  .rank-list { padding:8px 0; }
+  .rank-row { display:flex; align-items:center; padding:12px 16px; gap:12px; cursor:pointer; border-bottom:1px solid #111c2e; }
+  .rank-row:hover { background:#111c2e; }
+  .rk { width:26px; text-align:center; font-weight:700; font-size:15px; color:#64748b; font-variant-numeric:tabular-nums; }
+  .rk.g1 { color:#fbbf24; } .rk.g2 { color:#cbd5e1; } .rk.g3 { color:#d97706; }
+  .avatar { width:40px; height:40px; border-radius:50%; background:#334155; display:flex; align-items:center; justify-content:center; font-size:15px; color:#cbd5e1; font-weight:600; flex-shrink:0; }
+  .rinfo { flex:1; min-width:0; }
+  .rinfo .nm { font-size:14px; color:#e2e8f0; font-weight:600; }
+  .rinfo .sub { font-size:11px; color:#64748b; margin-top:2px; }
+  .rscore { text-align:right; }
+  .rscore .pt { font-size:16px; font-weight:700; font-variant-numeric:tabular-nums; }
+  .rscore .pt.pos { color:#22c55e; } .rscore .pt.neg { color:#ef4444; }
+  .rscore .lab { font-size:10px; color:#64748b; }
+  /* 详情页 */
+  .detail { padding:0 0 24px; }
+  .det-hero { background:linear-gradient(135deg,#1e3a8a,#3b82f6); padding:22px 18px; text-align:center; color:#fff; }
+  .det-hero .av { width:64px; height:64px; border-radius:50%; background:rgba(255,255,255,.2); margin:0 auto 10px; display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:700; }
+  .det-hero .nm { font-size:19px; font-weight:700; }
+  .det-hero .meta { font-size:12px; opacity:.85; margin-top:4px; }
+  .det-stats { display:flex; padding:14px 0; border-bottom:1px solid #1f2937; }
+  .det-stats .s { flex:1; text-align:center; }
+  .det-stats .s .v { font-size:18px; font-weight:700; font-variant-numeric:tabular-nums; }
+  .det-stats .s .v.pos{color:#22c55e;} .det-stats .s .v.neg{color:#ef4444;}
+  .det-stats .s .k { font-size:11px; color:#64748b; margin-top:2px; }
+  .det-radar { padding:20px 16px; text-align:center; }
+  .det-radar h4 { font-size:14px; color:#e2e8f0; margin-bottom:4px; text-align:left; }
+  .det-radar .desc { font-size:11px; color:#64748b; text-align:left; margin-bottom:10px; }
+  .det-six { padding:0 16px; }
+  .six-item { display:flex; justify-content:space-between; padding:9px 0; border-bottom:1px solid #111c2e; font-size:13px; }
+  .six-item .l { color:#cbd5e1; } .six-item .l small{ color:#64748b; }
+  .six-item .r { color:#3b82f6; font-weight:600; font-variant-numeric:tabular-nums; }
+  .back { padding:12px 16px; color:#3b82f6; font-size:13px; cursor:pointer; }
+  /* PC 端布局 */
+  .pc-layout { display:flex; height:100%; }
+  .pc-left { width:55%; border-right:1px solid #1f2937; overflow-y:auto; }
+  .pc-right { flex:1; overflow-y:auto; }
+  .pc-head { padding:16px 20px; border-bottom:1px solid #1f2937; display:flex; justify-content:space-between; align-items:center; }
+  .pc-head .t { font-size:16px; font-weight:700; color:#fff; }
+  .empty-tip { padding:40px 20px; text-align:center; color:#475569; font-size:13px; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">KPC<span>LIVE</span> · 选手积分</div>
+  <div class="seg">
+    <button id="t-admin" class="active" onclick="switchEnd('admin')">运营后台</button>
+    <button id="t-user" onclick="switchEnd('user')">用户端</button>
+  </div>
+  <div class="hint">原型演示 · 单赛季周期=1周 · 仅高额桌 · 数据源：赛事方结构化牌谱</div>
+</div>
+
+<!-- ================= 运营后台 ================= -->
+<div id="view-admin" class="view active">
+ <div class="admin-wrap">
+  <div class="crumb">选手积分管理 / <b>选手数据录入</b></div>
+  <div class="admin-grid">
+    <!-- 左：表单 -->
+    <div class="panel form-panel">
+      <div class="sec-title">基础信息</div>
+      <div class="field">
+        <label>选手名称</label>
+        <input id="f-name" value="陈一鸣" oninput="render()">
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>语言 <span class="u">(i18n)</span></label>
+          <select id="f-lang" onchange="render()">
+            <option value="zh">简体中文</option><option value="en">English</option><option value="zh-TW">繁體中文</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>所属赛季</label>
+          <select id="f-season" onchange="render()">
+            <option>2026-W26（本周）</option><option>2026-W25</option>
+          </select>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>桌型</label>
+          <select disabled><option>高额桌（High Stakes）</option></select>
+        </div>
+        <div class="field">
+          <label>盲注级别 <span class="u">BB</span></label>
+          <input id="f-blind" value="100/200" oninput="render()">
+        </div>
+      </div>
+
+      <div class="sec-title">积分 / 入榜</div>
+      <div class="row2">
+        <div class="field">
+          <label>净盈亏 <span class="u">(BB · 即赛季积分)</span></label>
+          <input id="f-bb" type="number" value="1248.5" oninput="render()">
+        </div>
+        <div class="field">
+          <label>有效手数</label>
+          <input id="f-hands" type="number" value="320" oninput="render()">
+        </div>
+      </div>
+
+      <div class="sec-title">六维打法指标（用于六星图）</div>
+      <div class="field"><label>① 盈利能力 BB/100 <span class="u">每百手赢的大盲</span></label>
+        <div class="range-row"><input id="m-bb100" type="range" min="-20" max="30" step="0.1" value="8.2" oninput="render()"><span class="val" id="v-bb100">8.2</span></div></div>
+      <div class="field"><label>② 入池率 VPIP <span class="u">%</span></label>
+        <div class="range-row"><input id="m-vpip" type="range" min="0" max="60" step="0.1" value="24.5" oninput="render()"><span class="val" id="v-vpip">24.5</span></div></div>
+      <div class="field"><label>③ 翻前加注率 PFR <span class="u">%</span></label>
+        <div class="range-row"><input id="m-pfr" type="range" min="0" max="50" step="0.1" value="19.8" oninput="render()"><span class="val" id="v-pfr">19.8</span></div></div>
+      <div class="field"><label>④ 激进系数 AF <span class="u">翻后</span></label>
+        <div class="range-row"><input id="m-af" type="range" min="0" max="10" step="0.1" value="3.1" oninput="render()"><span class="val" id="v-af">3.1</span></div></div>
+      <div class="field"><label>⑤ 摊牌倾向 WTSD <span class="u">%</span></label>
+        <div class="range-row"><input id="m-wtsd" type="range" min="0" max="50" step="0.1" value="28.0" oninput="render()"><span class="val" id="v-wtsd">28.0</span></div></div>
+      <div class="field"><label>⑥ 摊牌质量 W$SD <span class="u">%</span></label>
+        <div class="range-row"><input id="m-wsd" type="range" min="0" max="80" step="0.1" value="54.0" oninput="render()"><span class="val" id="v-wsd">54.0</span></div></div>
+
+      <div class="save-bar">
+        <button class="btn btn-primary">保存并发布到榜单</button>
+        <button class="btn btn-ghost">重置</button>
+      </div>
+    </div>
+
+    <!-- 右：动态六星图 -->
+    <div class="panel chart-panel">
+      <div class="score-cards">
+        <div class="score-card"><div class="k">赛季积分（净盈亏 BB）</div><div class="v" id="c-score">+1248.5</div></div>
+        <div class="score-card"><div class="k">有效手数</div><div class="v" id="c-hands">320</div><div id="c-badge" class="badge ok">已达入榜门槛（≥100手）</div></div>
+      </div>
+      <div class="radar-box">
+        <div id="radar-admin"></div>
+        <div class="radar-legend" id="legend-admin"></div>
+      </div>
+    </div>
+  </div>
+ </div>
+</div>
+
+<!-- ================= 用户端 ================= -->
+<div id="view-user" class="view">
+  <div class="user-wrap">
+    <div class="seg device-seg">
+      <button id="d-app" class="active" onclick="switchDevice('app')">App</button>
+      <button id="d-pc" onclick="switchDevice('pc')">PC 官网</button>
+      <button id="d-h5" onclick="switchDevice('h5')">H5</button>
+    </div>
+    <div id="device-mount"></div>
+  </div>
+</div>
+
+<script>
+/* ---------- 六星图渲染（SVG，复用于后台和用户端） ---------- */
+const DIMS = [
+  {key:'bb100', label:'盈利能力', sub:'BB/100', min:-20, max:30, fmt:v=>(v>0?'+':'')+v.toFixed(1)},
+  {key:'vpip',  label:'入池率',   sub:'VPIP %', min:0,  max:60, fmt:v=>v.toFixed(1)+'%'},
+  {key:'pfr',   label:'翻前激进', sub:'PFR %',  min:0,  max:50, fmt:v=>v.toFixed(1)+'%'},
+  {key:'af',    label:'翻后激进', sub:'AF',     min:0,  max:10, fmt:v=>v.toFixed(1)},
+  {key:'wtsd',  label:'摊牌倾向', sub:'WTSD %', min:0,  max:50, fmt:v=>v.toFixed(1)+'%'},
+  {key:'wsd',   label:'摊牌质量', sub:'W$SD %', min:0,  max:80, fmt:v=>v.toFixed(1)+'%'},
+];
+function norm(d, val){ return Math.max(0, Math.min(100, (val-d.min)/(d.max-d.min)*100)); }
+
+function radarSVG(values, size){
+  const cx=size/2, cy=size/2, R=size/2-46, N=6;
+  const ang=i=> -Math.PI/2 + i*2*Math.PI/N;
+  let grid='';
+  [0.25,0.5,0.75,1].forEach(f=>{
+    let pts=[]; for(let i=0;i<N;i++){ pts.push((cx+R*f*Math.cos(ang(i)))+','+(cy+R*f*Math.sin(ang(i)))); }
+    grid+=`<polygon points="${pts.join(' ')}" fill="none" stroke="#334155" stroke-width="1"/>`;
+  });
+  let axes='', labels='';
+  for(let i=0;i<N;i++){
+    const x=cx+R*Math.cos(ang(i)), y=cy+R*Math.sin(ang(i));
+    axes+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#334155" stroke-width="1"/>`;
+    const lx=cx+(R+26)*Math.cos(ang(i)), ly=cy+(R+26)*Math.sin(ang(i));
+    const anchor = Math.abs(Math.cos(ang(i)))<0.3?'middle':(Math.cos(ang(i))>0?'start':'end');
+    labels+=`<text x="${lx}" y="${ly}" fill="#94a3b8" font-size="12" text-anchor="${anchor}" dominant-baseline="middle">${DIMS[i].label}</text>`;
+  }
+  let dpts=[]; for(let i=0;i<N;i++){ const f=norm(DIMS[i],values[DIMS[i].key])/100; dpts.push((cx+R*f*Math.cos(ang(i)))+','+(cy+R*f*Math.sin(ang(i)))); }
+  const dots=dpts.map(p=>{const [x,y]=p.split(',');return `<circle cx="${x}" cy="${y}" r="3" fill="#3b82f6"/>`}).join('');
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    ${grid}${axes}
+    <polygon points="${dpts.join(' ')}" fill="rgba(59,130,246,.35)" stroke="#3b82f6" stroke-width="2"/>
+    ${dots}${labels}
+  </svg>`;
+}
+
+/* ---------- 后台：读表单 → 实时渲染 ---------- */
+function readForm(){
+  const g=id=>parseFloat(document.getElementById(id).value)||0;
+  ['bb100','vpip','pfr','af','wtsd','wsd'].forEach(k=>{ document.getElementById('v-'+k).textContent=g('m-'+k).toFixed(1); });
+  return { bb100:g('m-bb100'), vpip:g('m-vpip'), pfr:g('m-pfr'), af:g('m-af'), wtsd:g('m-wtsd'), wsd:g('m-wsd') };
+}
+function render(){
+  const vals=readForm();
+  document.getElementById('radar-admin').innerHTML=radarSVG(vals,320);
+  // legend
+  let lg='';
+  DIMS.forEach(d=>{ lg+=`<div class="legend-item"><div class="name">${d.label}<small>${d.sub}</small></div>
+    <div><span class="raw">${d.fmt(vals[d.key])}</span><span class="norm">归一 ${norm(d,vals[d.key]).toFixed(0)}</span></div></div>`; });
+  document.getElementById('legend-admin').innerHTML=lg;
+  // 积分卡
+  const bb=parseFloat(document.getElementById('f-bb').value)||0;
+  const sc=document.getElementById('c-score'); sc.textContent=(bb>0?'+':'')+bb.toFixed(1); sc.className='v '+(bb>=0?'pos':'neg');
+  const hands=parseInt(document.getElementById('f-hands').value)||0;
+  document.getElementById('c-hands').textContent=hands;
+  const b=document.getElementById('c-badge');
+  if(hands>=100){ b.className='badge ok'; b.textContent='已达入榜门槛（≥100手）'; }
+  else { b.className='badge no'; b.textContent='样本不足，不参与排名（需≥100手）'; }
+}
+
+/* ---------- 端切换 ---------- */
+function switchEnd(end){
+  document.getElementById('view-admin').classList.toggle('active', end==='admin');
+  document.getElementById('view-user').classList.toggle('active', end==='user');
+  document.getElementById('t-admin').classList.toggle('active', end==='admin');
+  document.getElementById('t-user').classList.toggle('active', end==='user');
+  if(end==='user') renderDevice();
+}
+
+/* ---------- 用户端数据 ---------- */
+const PLAYERS=[
+  {nm:'陈一鸣', score:1248.5, hands:320, vals:{bb100:8.2,vpip:24.5,pfr:19.8,af:3.1,wtsd:28,wsd:54}},
+  {nm:'KingLi', score:986.0,  hands:412, vals:{bb100:6.4,vpip:31.2,pfr:18.0,af:2.4,wtsd:32,wsd:49}},
+  {nm:'阿水',   score:742.5,  hands:268, vals:{bb100:9.1,vpip:19.8,pfr:16.5,af:4.0,wtsd:22,wsd:58}},
+  {nm:'Maverick',score:610.0, hands:355, vals:{bb100:4.8,vpip:38.5,pfr:24.0,af:5.2,wtsd:35,wsd:46}},
+  {nm:'老张',   score:355.0,  hands:190, vals:{bb100:3.2,vpip:22.0,pfr:14.0,af:2.0,wtsd:26,wsd:52}},
+  {nm:'Q仔',    score:-180.0, hands:240, vals:{bb100:-2.1,vpip:45.0,pfr:28.0,af:6.5,wtsd:40,wsd:42}},
+];
+let curDevice='app', curPlayer=null;
+function switchDevice(d){ curDevice=d; curPlayer=null;
+  ['app','pc','h5'].forEach(x=>document.getElementById('d-'+x).classList.toggle('active', x===d));
+  renderDevice();
+}
+function rankClass(i){ return i===0?'g1':i===1?'g2':i===2?'g3':''; }
+
+function listHTML(){
+  let rows='';
+  PLAYERS.forEach((p,i)=>{
+    rows+=`<div class="rank-row" onclick="openDetail(${i})">
+      <div class="rk ${rankClass(i)}">${i+1}</div>
+      <div class="avatar">${p.nm[0]}</div>
+      <div class="rinfo"><div class="nm">${p.nm}</div><div class="sub">VPIP ${p.vals.vpip}% · ${p.hands}手 · 高额桌</div></div>
+      <div class="rscore"><div class="pt ${p.score>=0?'pos':'neg'}">${p.score>0?'+':''}${p.score.toFixed(1)}</div><div class="lab">积分(BB)</div></div>
+    </div>`;
+  });
+  return `<div class="rank-list">${rows}</div>`;
+}
+function detailHTML(p, withBack){
+  const s=320;
+  let six='';
+  DIMS.forEach(d=>{ six+=`<div class="six-item"><div class="l">${d.label} <small>${d.sub}</small></div><div class="r">${d.fmt(p.vals[d.key])}</div></div>`; });
+  return `${withBack?'<div class="back" onclick="closeDetail()">‹ 返回榜单</div>':''}
+  <div class="detail">
+    <div class="det-hero"><div class="av">${p.nm[0]}</div><div class="nm">${p.nm}</div><div class="meta">2026-W26 · 高额桌 · 100/200</div></div>
+    <div class="det-stats">
+      <div class="s"><div class="v ${p.score>=0?'pos':'neg'}">${p.score>0?'+':''}${p.score.toFixed(1)}</div><div class="k">积分(BB)</div></div>
+      <div class="s"><div class="v">${p.hands}</div><div class="k">有效手数</div></div>
+      <div class="s"><div class="v">${p.vals.vpip}%</div><div class="k">VPIP</div></div>
+    </div>
+    <div class="det-radar"><h4>打法画像 · 六星图</h4><div class="desc">按本赛季牌谱计算，归一化相对当季入榜选手</div>${radarSVG(p.vals,s)}</div>
+    <div class="det-six">${six}</div>
+  </div>`;
+}
+function openDetail(i){ curPlayer=i; renderDevice(); }
+function closeDetail(){ curPlayer=null; renderDevice(); }
+
+function renderDevice(){
+  const mount=document.getElementById('device-mount');
+  const season=`<div class="app-head"><div class="t">🏆 高额积分榜</div>
+      <div class="season"><span>赛季 2026-W26（本周）</span><span class="countdown">距清零 2天14时</span></div></div>`;
+  if(curDevice==='app'||curDevice==='h5'){
+    const tag = curDevice==='h5' ? '<div style="text-align:center;font-size:11px;color:#475569;padding:6px;">— H5 内嵌 / 免登录可浏览 —</div>' : '';
+    let body = curPlayer!==null ? detailHTML(PLAYERS[curPlayer], true)
+      : season + `<div class="tabbar"><div class="on">积分榜</div><div>选手</div><div>规则</div></div>` + listHTML();
+    mount.innerHTML=`<div class="device phone"><div class="scr">${tag}${body}</div></div>`;
+  } else {
+    // PC：左榜单 右详情
+    const p = curPlayer!==null ? PLAYERS[curPlayer] : PLAYERS[0];
+    mount.innerHTML=`<div class="device pc"><div class="scr"><div class="pc-layout">
+      <div class="pc-left"><div class="pc-head"><div class="t">🏆 高额积分榜 · 2026-W26</div><div style="font-size:12px;color:#64748b;">距清零 2天14时</div></div>${listHTML()}</div>
+      <div class="pc-right">${detailHTML(p,false)}</div>
+    </div></div></div>`;
+  }
+}
+
+/* init */
+render();
+</script>
+</body>
+</html>
