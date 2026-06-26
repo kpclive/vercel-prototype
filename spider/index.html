@@ -36,8 +36,12 @@
   .field select:disabled { color:#94a3b8; }
   .row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
   .range-row { display:flex; align-items:center; gap:10px; }
-  .range-row input[type=range] { flex:1; accent-color:#3b82f6; }
-  .range-row .val { width:60px; text-align:right; font-size:13px; color:#1e293b; font-variant-numeric:tabular-nums; }
+  .slider-wrap { position:relative; flex:1; height:22px; display:flex; align-items:center; }
+  .slider-wrap input[type=range] { width:100%; accent-color:#3b82f6; }
+  .tick100 { position:absolute; top:50%; left:76.9%; width:9px; height:9px; border-radius:50%; background:#ef4444; transform:translate(-50%,-50%); box-shadow:0 0 0 2px #fff; pointer-events:none; }
+  .range-row .val { width:48px; text-align:right; font-size:13px; color:#1e293b; font-variant-numeric:tabular-nums; }
+  .sec-note { font-size:11px; color:#94a3b8; margin:-4px 0 12px; }
+  .sec-note .rd { color:#ef4444; }
   .save-bar { margin-top:22px; display:flex; gap:12px; }
   .btn { border:0; border-radius:8px; padding:11px 20px; font-size:13px; cursor:pointer; }
   .btn-primary { background:#3b82f6; color:#fff; }
@@ -179,19 +183,20 @@
         </div>
       </div>
 
-      <div class="sec-title">六维打法指标（用于六星图）</div>
-      <div class="field"><label>① 盈利能力 BB/100 <span class="u">每百手赢的大盲</span></label>
-        <div class="range-row"><input id="m-bb100" type="range" min="-20" max="30" step="0.1" value="8.2" oninput="render()"><span class="val" id="v-bb100">8.2</span></div></div>
-      <div class="field"><label>② 入池率 VPIP <span class="u">%</span></label>
-        <div class="range-row"><input id="m-vpip" type="range" min="0" max="60" step="0.1" value="24.5" oninput="render()"><span class="val" id="v-vpip">24.5</span></div></div>
-      <div class="field"><label>③ 翻前加注率 PFR <span class="u">%</span></label>
-        <div class="range-row"><input id="m-pfr" type="range" min="0" max="50" step="0.1" value="19.8" oninput="render()"><span class="val" id="v-pfr">19.8</span></div></div>
-      <div class="field"><label>④ 激进系数 AF <span class="u">翻后</span></label>
-        <div class="range-row"><input id="m-af" type="range" min="0" max="10" step="0.1" value="3.1" oninput="render()"><span class="val" id="v-af">3.1</span></div></div>
-      <div class="field"><label>⑤ 摊牌倾向 WTSD <span class="u">%</span></label>
-        <div class="range-row"><input id="m-wtsd" type="range" min="0" max="50" step="0.1" value="28.0" oninput="render()"><span class="val" id="v-wtsd">28.0</span></div></div>
-      <div class="field"><label>⑥ 摊牌质量 W$SD <span class="u">%</span></label>
-        <div class="range-row"><input id="m-wsd" type="range" min="0" max="80" step="0.1" value="54.0" oninput="render()"><span class="val" id="v-wsd">54.0</span></div></div>
+      <div class="sec-title">六维打法得分（用于六星图）</div>
+      <div class="sec-note">每维 0–130 分：拖到<span class="rd">●红点=100满档</span>（雷达边缘），可继续突破至 130 冲出边缘。</div>
+      <div class="field"><label>① 盈利能力 <span class="u">BB/100</span></label>
+        <div class="range-row"><div class="slider-wrap"><input id="m-bb100" type="range" min="0" max="130" step="1" value="101" oninput="render()"><span class="tick100"></span></div><span class="val" id="v-bb100">101</span></div></div>
+      <div class="field"><label>② 入池率 <span class="u">VPIP</span></label>
+        <div class="range-row"><div class="slider-wrap"><input id="m-vpip" type="range" min="0" max="130" step="1" value="82" oninput="render()"><span class="tick100"></span></div><span class="val" id="v-vpip">82</span></div></div>
+      <div class="field"><label>③ 翻前激进 <span class="u">PFR</span></label>
+        <div class="range-row"><div class="slider-wrap"><input id="m-pfr" type="range" min="0" max="130" step="1" value="99" oninput="render()"><span class="tick100"></span></div><span class="val" id="v-pfr">99</span></div></div>
+      <div class="field"><label>④ 翻后激进 <span class="u">AF</span></label>
+        <div class="range-row"><div class="slider-wrap"><input id="m-af" type="range" min="0" max="130" step="1" value="78" oninput="render()"><span class="tick100"></span></div><span class="val" id="v-af">78</span></div></div>
+      <div class="field"><label>⑤ 摊牌倾向 <span class="u">WTSD</span></label>
+        <div class="range-row"><div class="slider-wrap"><input id="m-wtsd" type="range" min="0" max="130" step="1" value="93" oninput="render()"><span class="tick100"></span></div><span class="val" id="v-wtsd">93</span></div></div>
+      <div class="field"><label>⑥ 摊牌质量 <span class="u">W$SD</span></label>
+        <div class="range-row"><div class="slider-wrap"><input id="m-wsd" type="range" min="0" max="130" step="1" value="98" oninput="render()"><span class="tick100"></span></div><span class="val" id="v-wsd">98</span></div></div>
 
       <div class="save-bar">
         <button class="btn btn-primary">保存并发布到榜单</button>
@@ -228,29 +233,40 @@
 
 <script>
 /* ---------- 六星图渲染（SVG，复用于后台和用户端） ---------- */
+/* 每维直接是六星图得分(0-130)：100=满档(雷达边缘)，可突破至130冲出边缘。sub 仅标注对应牌谱指标。 */
 const DIMS = [
-  {key:'bb100', label:'盈利能力', sub:'BB/100', min:-20, max:30, fmt:v=>(v>0?'+':'')+v.toFixed(1)},
-  {key:'vpip',  label:'入池率',   sub:'VPIP %', min:0,  max:60, fmt:v=>v.toFixed(1)+'%'},
-  {key:'pfr',   label:'翻前激进', sub:'PFR %',  min:0,  max:50, fmt:v=>v.toFixed(1)+'%'},
-  {key:'af',    label:'翻后激进', sub:'AF',     min:0,  max:10, fmt:v=>v.toFixed(1)},
-  {key:'wtsd',  label:'摊牌倾向', sub:'WTSD %', min:0,  max:50, fmt:v=>v.toFixed(1)+'%'},
-  {key:'wsd',   label:'摊牌质量', sub:'W$SD %', min:0,  max:80, fmt:v=>v.toFixed(1)+'%'},
+  {key:'bb100', label:'盈利能力', sub:'BB/100'},
+  {key:'vpip',  label:'入池率',   sub:'VPIP'},
+  {key:'pfr',   label:'翻前激进', sub:'PFR'},
+  {key:'af',    label:'翻后激进', sub:'AF'},
+  {key:'wtsd',  label:'摊牌倾向', sub:'WTSD'},
+  {key:'wsd',   label:'摊牌质量', sub:'W$SD'},
 ];
-function norm(d, val){ return Math.max(0, Math.min(100, (val-d.min)/(d.max-d.min)*100)); }
+const VCAP = 130; // 满档=100(雷达边缘)，可突破至130(冲出边缘)
+function norm(d, val){ return Math.max(0, Math.min(VCAP, val)); }
+function avg6(v){ return DIMS.reduce((s,d)=>s+v[d.key],0)/DIMS.length; }
 
 function radarSVG(values, size){
-  const cx=size/2, cy=size/2, R=size/2-46, N=6;
+  const cx=size/2, cy=size/2, R=size/2-58, N=6;
   const ang=i=> -Math.PI/2 + i*2*Math.PI/N;
-  let grid='';
-  [0.25,0.5,0.75,1].forEach(f=>{
+  // R 对应归一值 100（雷达边缘）；最大可画到 1.2R（突破）
+  let grid='', edgeStroke='';
+  // 100 边缘区域（背景淡填充，界定"满档"范围，突破部分落在区域外更清晰）
+  let edge=[]; for(let i=0;i<N;i++){ edge.push((cx+R*Math.cos(ang(i)))+','+(cy+R*Math.sin(ang(i)))); }
+  grid+=`<polygon points="${edge.join(' ')}" fill="#f1f5f9"/>`;
+  // 内圈：浅色细线
+  [0.25,0.5,0.75].forEach(f=>{
     let pts=[]; for(let i=0;i<N;i++){ pts.push((cx+R*f*Math.cos(ang(i)))+','+(cy+R*f*Math.sin(ang(i)))); }
     grid+=`<polygon points="${pts.join(' ')}" fill="none" stroke="#e2e8f0" stroke-width="1"/>`;
   });
+  // 100 边缘描边：加粗深色实线（最后叠加，确保最清晰）
+  edgeStroke=`<polygon points="${edge.join(' ')}" fill="none" stroke="#334155" stroke-width="2.5" stroke-linejoin="round"/>`;
+  const EX = VCAP/100; // 1.2，坐标轴/标签外延空间
   let axes='', labels='';
   for(let i=0;i<N;i++){
-    const x=cx+R*Math.cos(ang(i)), y=cy+R*Math.sin(ang(i));
+    const x=cx+R*EX*Math.cos(ang(i)), y=cy+R*EX*Math.sin(ang(i));
     axes+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#e2e8f0" stroke-width="1"/>`;
-    const lx=cx+(R+26)*Math.cos(ang(i)), ly=cy+(R+26)*Math.sin(ang(i));
+    const lx=cx+(R*EX+22)*Math.cos(ang(i)), ly=cy+(R*EX+22)*Math.sin(ang(i));
     const anchor = Math.abs(Math.cos(ang(i)))<0.3?'middle':(Math.cos(ang(i))>0?'start':'end');
     labels+=`<text x="${lx}" y="${ly}" fill="#64748b" font-size="12" text-anchor="${anchor}" dominant-baseline="middle">${DIMS[i].label}</text>`;
   }
@@ -258,7 +274,8 @@ function radarSVG(values, size){
   const dots=dpts.map(p=>{const [x,y]=p.split(',');return `<circle cx="${x}" cy="${y}" r="3" fill="#3b82f6"/>`}).join('');
   return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
     ${grid}${axes}
-    <polygon points="${dpts.join(' ')}" fill="rgba(59,130,246,.22)" stroke="#3b82f6" stroke-width="2"/>
+    <polygon points="${dpts.join(' ')}" fill="rgba(59,130,246,.28)" stroke="#3b82f6" stroke-width="2.5" stroke-linejoin="round"/>
+    ${edgeStroke}
     ${dots}${labels}
   </svg>`;
 }
@@ -266,16 +283,18 @@ function radarSVG(values, size){
 /* ---------- 后台：读表单 → 实时渲染 ---------- */
 function readForm(){
   const g=id=>parseFloat(document.getElementById(id).value)||0;
-  ['bb100','vpip','pfr','af','wtsd','wsd'].forEach(k=>{ document.getElementById('v-'+k).textContent=g('m-'+k).toFixed(1); });
-  return { bb100:g('m-bb100'), vpip:g('m-vpip'), pfr:g('m-pfr'), af:g('m-af'), wtsd:g('m-wtsd'), wsd:g('m-wsd') };
+  const v={ bb100:g('m-bb100'), vpip:g('m-vpip'), pfr:g('m-pfr'), af:g('m-af'), wtsd:g('m-wtsd'), wsd:g('m-wsd') };
+  ['bb100','vpip','pfr','af','wtsd','wsd'].forEach(k=>{ document.getElementById('v-'+k).textContent=Math.round(v[k]); });
+  return v;
 }
 function render(){
   const vals=readForm();
   document.getElementById('radar-admin').innerHTML=radarSVG(vals,320);
   // legend
   let lg='';
-  DIMS.forEach(d=>{ lg+=`<div class="legend-item"><div class="name">${d.label}<small>${d.sub}</small></div>
-    <div><span class="raw">${d.fmt(vals[d.key])}</span><span class="norm">归一 ${norm(d,vals[d.key]).toFixed(0)}</span></div></div>`; });
+  DIMS.forEach(d=>{ const nv=norm(d,vals[d.key]); const over=nv>100;
+    lg+=`<div class="legend-item"><div class="name">${d.label}<small>${d.sub}</small></div>
+    <div><span class="norm" style="${over?'color:#1d4ed8;font-weight:700;':''}">${Math.round(nv)}/100${over?' ↑突破':''}</span></div></div>`; });
   document.getElementById('legend-admin').innerHTML=lg;
   // 积分卡
   const bb=parseFloat(document.getElementById('f-bb').value)||0;
@@ -297,13 +316,14 @@ function switchEnd(end){
 }
 
 /* ---------- 用户端数据 ---------- */
+/* vals 为六维得分(0-130) */
 const PLAYERS=[
-  {nm:'陈一鸣', score:1248.5, hands:320, vals:{bb100:8.2,vpip:24.5,pfr:19.8,af:3.1,wtsd:28,wsd:54}},
-  {nm:'KingLi', score:986.0,  hands:412, vals:{bb100:6.4,vpip:31.2,pfr:18.0,af:2.4,wtsd:32,wsd:49}},
-  {nm:'阿水',   score:742.5,  hands:268, vals:{bb100:9.1,vpip:19.8,pfr:16.5,af:4.0,wtsd:22,wsd:58}},
-  {nm:'Maverick',score:610.0, hands:355, vals:{bb100:4.8,vpip:38.5,pfr:24.0,af:5.2,wtsd:35,wsd:46}},
-  {nm:'老张',   score:355.0,  hands:190, vals:{bb100:3.2,vpip:22.0,pfr:14.0,af:2.0,wtsd:26,wsd:52}},
-  {nm:'Q仔',    score:-180.0, hands:240, vals:{bb100:-2.1,vpip:45.0,pfr:28.0,af:6.5,wtsd:40,wsd:42}},
+  {nm:'陈一鸣', score:1248.5, hands:320, vals:{bb100:101,vpip:82, pfr:99, af:78, wtsd:93, wsd:98}},
+  {nm:'KingLi', score:986.0,  hands:412, vals:{bb100:91, vpip:104,pfr:90, af:60, wtsd:107,wsd:89}},
+  {nm:'阿水',   score:742.5,  hands:268, vals:{bb100:106,vpip:66, pfr:83, af:100,wtsd:73, wsd:106}},
+  {nm:'Maverick',score:610.0, hands:355, vals:{bb100:82, vpip:128,pfr:120,af:130,wtsd:117,wsd:84}},
+  {nm:'老张',   score:355.0,  hands:190, vals:{bb100:73, vpip:73, pfr:70, af:50, wtsd:87, wsd:95}},
+  {nm:'Q仔',    score:-180.0, hands:240, vals:{bb100:44, vpip:130,pfr:130,af:130,wtsd:130,wsd:76}},
 ];
 let curDevice='app', curPlayer=null;
 function switchDevice(d){ curDevice=d; curPlayer=null;
@@ -318,7 +338,7 @@ function listHTML(){
     rows+=`<div class="rank-row" onclick="openDetail(${i})">
       <div class="rk ${rankClass(i)}">${i+1}</div>
       <div class="avatar">${p.nm[0]}</div>
-      <div class="rinfo"><div class="nm">${p.nm}</div><div class="sub">VPIP ${p.vals.vpip}% · ${p.hands}手 · 高额桌</div></div>
+      <div class="rinfo"><div class="nm">${p.nm}</div><div class="sub">六维均分 ${Math.round(avg6(p.vals))} · ${p.hands}手 · 高额桌</div></div>
       <div class="rscore"><div class="pt ${p.score>=0?'pos':'neg'}">${p.score>0?'+':''}${p.score.toFixed(1)}</div><div class="lab">积分(BB)</div></div>
     </div>`;
   });
@@ -327,16 +347,16 @@ function listHTML(){
 function detailHTML(p, withBack){
   const s=320;
   let six='';
-  DIMS.forEach(d=>{ six+=`<div class="six-item"><div class="l">${d.label} <small>${d.sub}</small></div><div class="r">${d.fmt(p.vals[d.key])}</div></div>`; });
+  DIMS.forEach(d=>{ const nv=p.vals[d.key]; const over=nv>100; six+=`<div class="six-item"><div class="l">${d.label} <small>${d.sub}</small></div><div class="r" style="${over?'color:#1d4ed8;':''}">${nv}/100${over?' ↑':''}</div></div>`; });
   return `${withBack?'<div class="back" onclick="closeDetail()">‹ 返回榜单</div>':''}
   <div class="detail">
     <div class="det-hero"><div class="av">${p.nm[0]}</div><div class="nm">${p.nm}</div><div class="meta">2026-W26 · 高额桌 · 100/200</div></div>
     <div class="det-stats">
       <div class="s"><div class="v ${p.score>=0?'pos':'neg'}">${p.score>0?'+':''}${p.score.toFixed(1)}</div><div class="k">积分(BB)</div></div>
       <div class="s"><div class="v">${p.hands}</div><div class="k">有效手数</div></div>
-      <div class="s"><div class="v">${p.vals.vpip}%</div><div class="k">VPIP</div></div>
+      <div class="s"><div class="v">${Math.round(avg6(p.vals))}</div><div class="k">六维均分</div></div>
     </div>
-    <div class="det-radar"><h4>打法画像 · 六星图</h4><div class="desc">按本赛季牌谱计算，归一化相对当季入榜选手</div>${radarSVG(p.vals,s)}</div>
+    <div class="det-radar"><h4>打法画像 · 六星图</h4><div class="desc">满档=100（雷达边缘），高出的维度可突破至 130、冲出边缘</div>${radarSVG(p.vals,s)}</div>
     <div class="det-six">${six}</div>
   </div>`;
 }
